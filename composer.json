@@ -1,0 +1,17 @@
+{
+  "name": "psychomieze/adminpanel-extended",
+  "license": "GPL-2.0+",
+
+  "type": "typo3-cms-extension",
+  "description": "TYPO3 AdminPanel Extended",
+  "homepage": "https://typo3.org",
+  "require": {
+    "typo3/cms-adminpanel": "9.2.*@dev"
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-master"
+  },
+  "replace": {
+    "introduction": "*"
+  }
+}

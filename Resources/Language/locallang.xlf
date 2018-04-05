@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1420197366" source-language="en" datatype="plaintext" original="messages" date="2015-01-02T11:16:11Z"
+		  product-name="unicorns">
+		<header/>
+		<body>
+			<trans-unit id="doctrineDebug">
+				<source>SQL Debug</source>
+			</trans-unit>
+			<trans-unit id="sqlQuery">
+				<source>SQL Query</source>
+			</trans-unit>
+			<trans-unit id="queryCount">
+				<source>Count</source>
+			</trans-unit>
+			<trans-unit id="queryTime">
+				<source>Total Time</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
