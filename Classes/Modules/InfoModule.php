@@ -24,11 +24,6 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     protected $extendedExtResources = 'EXT:adminpanel_extended/Resources';
 
     /**
-     * @var array
-     */
-    protected $systemInformation = [];
-
-    /**
      * Creates the content for the "info" section ("module") of the Admin Panel
      *
      * @return string HTML content for the section. Consists of a string with table-rows with four columns.
@@ -41,8 +36,6 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths([$this->extResources . '/Partials']);
         $tsfe = $this->getTypoScriptFrontendController();
-
-        $this->collectInformation();
 
         $view->assignMultiple([
             'post' => $_POST,
@@ -62,7 +55,7 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
                 ],
                 'imagesOnPage' => $this->collectImagesOnPage(),
                 'documentSize' => $this->collectDocumentSize(),
-                'systemEnvironmentInformation' => $this->systemInformation
+                'systemEnvironmentInformation' => $this->collectInformation()
             ]
         ]);
 
@@ -133,24 +126,26 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     /**
      * Collect the system information
      */
-    protected function collectInformation(): void
+    protected function collectInformation(): array
     {
-        $this->getTypo3Version();
-        $this->getWebServer();
-        $this->getPhpVersion();
-        $this->getDatabase();
-        $this->getApplicationContext();
-        $this->getComposerMode();
-        $this->getGitRevision();
-        $this->getOperatingSystem();
+        $systemInformation[] = $this->getTypo3Version();
+        $systemInformation[] = $this->getWebServer();
+        $systemInformation[] = $this->getPhpVersion();
+        $systemInformation = $this->getDatabase($systemInformation);
+        $systemInformation[] = $this->getApplicationContext();
+        $systemInformation = $this->getComposerMode($systemInformation);
+        $systemInformation = $this->getGitRevision($systemInformation);
+        $systemInformation[] = $this->getOperatingSystem();
+
+        return $systemInformation;
     }
 
     /**
      * Gets the TYPO3 version
      */
-    protected function getTypo3Version(): void
+    protected function getTypo3Version(): array
     {
-        $this->systemInformation[] = [
+        return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => VersionNumberUtility::getCurrentTypo3Version(),
             'iconIdentifier' => 'sysinfo-typo3-version'
@@ -160,9 +155,9 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     /**
      * Gets the webserver software
      */
-    protected function getWebServer(): void
+    protected function getWebServer(): array
     {
-        $this->systemInformation[] = [
+        return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
             'value' => $_SERVER['SERVER_SOFTWARE'],
             'iconIdentifier' => 'sysinfo-webserver'
@@ -172,9 +167,9 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     /**
      * Gets the PHP version
      */
-    protected function getPhpVersion(): void
+    protected function getPhpVersion(): array
     {
-        $this->systemInformation[] = [
+        return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
             'iconIdentifier' => 'sysinfo-php-version'
@@ -184,10 +179,10 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     /**
      * Get the database info
      */
-    protected function getDatabase(): void
+    protected function getDatabase(array $systemInformation): array
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-            $this->systemInformation[] = [
+            $systemInformation[] = [
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
                 'value' => GeneralUtility::makeInstance(ConnectionPool::class)
@@ -196,15 +191,17 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
                 'iconIdentifier' => 'sysinfo-database'
             ];
         }
+
+        return $systemInformation;
     }
 
     /**
      * Gets the application context
      */
-    protected function getApplicationContext(): void
+    protected function getApplicationContext(): array
     {
         $applicationContext = GeneralUtility::getApplicationContext();
-        $this->systemInformation[] = [
+        return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
             'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
@@ -215,49 +212,51 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     /**
      * Adds the information if the Composer mode is enabled or disabled to the displayed system information
      */
-    protected function getComposerMode(): void
+    protected function getComposerMode(array $systemInformation): array
     {
-        if (!Environment::isComposerMode()) {
-            return;
+        if (Environment::isComposerMode()) {
+            $systemInformation[] = [
+                'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
+                'value' => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
+                'iconIdentifier' => 'sysinfo-composer-mode',
+            ];
         }
 
-        $this->systemInformation[] = [
-            'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
-            'value' => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
-            'iconIdentifier' => 'sysinfo-composer-mode'
-        ];
+        return $systemInformation;
     }
 
     /**
      * Gets the current GIT revision and branch
      */
-    protected function getGitRevision(): void
+    protected function getGitRevision(array $systemInformation): array
     {
         if (!StringUtility::endsWith(TYPO3_version, '-dev') || SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
-            return;
+            return $systemInformation;
         }
         // check if git exists
         CommandUtility::exec('git --version', $_, $returnCode);
         if ((int)$returnCode !== 0) {
             // git is not available
-            return;
+            return $systemInformation;
         }
 
         $revision = trim(CommandUtility::exec('git rev-parse --short HEAD'));
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
-            $this->systemInformation[] = [
+            $systemInformation[] = [
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
                 'iconIdentifier' => 'sysinfo-git'
             ];
         }
+
+        return $systemInformation;
     }
 
     /**
      * Gets the system kernel and version
      */
-    protected function getOperatingSystem(): void
+    protected function getOperatingSystem(): array
     {
         $kernelName = php_uname('s');
         switch (strtolower($kernelName)) {
@@ -270,11 +269,10 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
             default:
                 $icon = 'windows';
         }
-        $this->systemInformation[] = [
+        return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
             'value' => $kernelName . ' ' . php_uname('r'),
             'iconIdentifier' => 'sysinfo-os-' . $icon
         ];
     }
-
 }
