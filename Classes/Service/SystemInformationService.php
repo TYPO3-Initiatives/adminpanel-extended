@@ -17,31 +17,38 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
  * Class SystemInformationService
  * @internal
  */
-class SystemInformationService implements SingletonInterface, SystemInformationInterface
+final class SystemInformationService implements SingletonInterface, SystemInformationInterface
 {
+    /**
+     * @var array
+     */
+    private static $systemInformation = [];
+
     /**
      * Collect the system information
      */
     public function collectInformation(): array
     {
-        $systemInformation[] = $this->getTypo3Version();
-        $systemInformation[] = $this->getWebServer();
-        $systemInformation[] = $this->getPhpVersion();
-        $systemInformation = $this->getDatabase($systemInformation);
-        $systemInformation[] = $this->getApplicationContext();
-        $systemInformation = $this->getComposerMode($systemInformation);
-        $systemInformation = $this->getGitRevision($systemInformation);
-        $systemInformation[] = $this->getOperatingSystem();
+        if (empty(self::$systemInformation)) {
+            $this->getTypo3Version();
+            $this->getWebServer();
+            $this->getPhpVersion();
+            $this->getDatabase();
+            $this->getApplicationContext();
+            $this->getComposerMode();
+            $this->getGitRevision();
+            $this->getOperatingSystem();
+        }
 
-        return $systemInformation;
+        return self::$systemInformation;
     }
 
     /**
      * Gets the TYPO3 version
      */
-    protected function getTypo3Version(): array
+    private function getTypo3Version(): void
     {
-        return [
+        self::$systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => VersionNumberUtility::getCurrentTypo3Version(),
             'iconIdentifier' => 'sysinfo-typo3-version'
@@ -51,9 +58,9 @@ class SystemInformationService implements SingletonInterface, SystemInformationI
     /**
      * Gets the webserver software
      */
-    protected function getWebServer(): array
+    private function getWebServer(): void
     {
-        return [
+        self::$systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.webserver',
             'value' => $_SERVER['SERVER_SOFTWARE'],
             'iconIdentifier' => 'sysinfo-webserver'
@@ -63,9 +70,9 @@ class SystemInformationService implements SingletonInterface, SystemInformationI
     /**
      * Gets the PHP version
      */
-    protected function getPhpVersion(): array
+    private function getPhpVersion(): void
     {
-        return [
+        self::$systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.phpversion',
             'value' => PHP_VERSION,
             'iconIdentifier' => 'sysinfo-php-version'
@@ -75,10 +82,10 @@ class SystemInformationService implements SingletonInterface, SystemInformationI
     /**
      * Get the database info
      */
-    protected function getDatabase(array $systemInformation): array
+    private function getDatabase(): void
     {
         foreach (GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames() as $connectionName) {
-            $systemInformation[] = [
+            self::$systemInformation[] = [
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.database',
                 'titleAddition' => $connectionName,
                 'value' => GeneralUtility::makeInstance(ConnectionPool::class)
@@ -87,18 +94,16 @@ class SystemInformationService implements SingletonInterface, SystemInformationI
                 'iconIdentifier' => 'sysinfo-database'
             ];
         }
-
-        return $systemInformation;
     }
 
     /**
      * Gets the application context
      */
-    protected function getApplicationContext(): array
+    private function getApplicationContext(): void
     {
         $applicationContext = GeneralUtility::getApplicationContext();
 
-        return [
+        self::$systemInformation[] = [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.applicationcontext',
             'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
@@ -109,51 +114,47 @@ class SystemInformationService implements SingletonInterface, SystemInformationI
     /**
      * Adds the information if the Composer mode is enabled or disabled to the displayed system information
      */
-    protected function getComposerMode(array $systemInformation): array
+    private function getComposerMode(): void
     {
         if (Environment::isComposerMode()) {
-            $systemInformation[] = [
+            self::$systemInformation[] = [
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
                 'value' => $GLOBALS['LANG']->sL('LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
                 'iconIdentifier' => 'sysinfo-composer-mode',
             ];
         }
-
-        return $systemInformation;
     }
 
     /**
      * Gets the current GIT revision and branch
      */
-    protected function getGitRevision(array $systemInformation): array
+    private function getGitRevision(): void
     {
         if (!StringUtility::endsWith(TYPO3_version, '-dev') || SystemEnvironmentBuilder::isFunctionDisabled('exec')) {
-            return $systemInformation;
+            return;
         }
         // check if git exists
         CommandUtility::exec('git --version', $_, $returnCode);
         if ((int)$returnCode !== 0) {
             // git is not available
-            return $systemInformation;
+            return;
         }
 
         $revision = trim(CommandUtility::exec('git rev-parse --short HEAD'));
         $branch = trim(CommandUtility::exec('git rev-parse --abbrev-ref HEAD'));
         if (!empty($revision) && !empty($branch)) {
-            $systemInformation[] = [
+            self::$systemInformation[] = [
                 'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.gitrevision',
                 'value' => sprintf('%s [%s]', $revision, $branch),
                 'iconIdentifier' => 'sysinfo-git'
             ];
         }
-
-        return $systemInformation;
     }
 
     /**
      * Gets the system kernel and version
      */
-    protected function getOperatingSystem(): array
+    private function getOperatingSystem(): array
     {
         $kernelName = php_uname('s');
         switch (strtolower($kernelName)) {
