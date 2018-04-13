@@ -35,13 +35,6 @@
 						<f:for each="{info.systemEnvironmentInformation}" as="info">
 							<tr>
 								<td>
-									<f:if condition="{info.iconIdentifier}">
-										<f:then>
-											<core:icon identifier="{info.iconIdentifier}" size="small"/>
-										</f:then>
-										<f:else>{info.icon -> f:format.raw()}</f:else>
-									</f:if>
-
 									<f:translate key="{info.title}" default="{info.title}"/>
 									<f:if condition="{info.titleAddition}"> ({info.titleAddition -> f:format.htmlspecialchars()})</f:if>
 								</td>
