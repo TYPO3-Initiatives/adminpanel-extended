@@ -1,3 +1,4 @@
+{namespace ae=Psychomieze\AdminpanelExtended\ViewHelpers}
 <div class="container--tabs">
 	<section class="row">
 		<ul class="nav nav-tabs" data-typo3-role="typo3-adminPanel-tabs">
@@ -42,6 +43,10 @@
 							</tr>
 						</f:for>
 					</table>
+
+					<hr>
+
+					<ae:phpInfo tableClass="typo3-adminPanel-table"/>
 				</div>
 			</div>
 			<div class="tab-pane" data-typo3-role="typo3-adminPanel-tab" data-typo3-tab-id="get">
