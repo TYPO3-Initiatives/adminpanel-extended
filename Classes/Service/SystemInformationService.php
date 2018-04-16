@@ -15,6 +15,10 @@ use TYPO3\CMS\Core\Utility\VersionNumberUtility;
 
 /**
  * Class SystemInformationService
+ *
+ * Most of the private methods are originally introduced in TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem.
+ *
+ * @see \TYPO3\CMS\Backend\Backend\ToolbarItems\SystemInformationToolbarItem
  * @internal
  */
 final class SystemInformationService implements SingletonInterface, SystemInformationInterface

@@ -5,13 +5,14 @@ namespace Psychomieze\AdminpanelExtended\Modules;
 
 use Psychomieze\AdminpanelExtended\Service\SystemInformationInterface;
 use Psychomieze\AdminpanelExtended\Service\SystemInformationService;
+use TYPO3\CMS\Adminpanel\Modules\InfoModule as AdminpanelInfoModule;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * Extends original InfoModule with more functionality
  */
-class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
+class InfoModule extends AdminpanelInfoModule
 {
     /**
      * @var string
