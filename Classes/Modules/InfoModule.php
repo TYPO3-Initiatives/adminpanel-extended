@@ -58,67 +58,6 @@ class InfoModule extends \TYPO3\CMS\Adminpanel\Modules\InfoModule
     }
 
     /**
-     * Collects images from TypoScriptFrontendController and calculates the total size.
-     * Returns human readable image sizes for fluid template output
-     *
-     * @return array
-     */
-    protected function collectImagesOnPage(): array
-    {
-        $imagesOnPage = [
-            'files' => [],
-            'total' => 0,
-            'totalSize' => 0,
-            'totalSizeHuman' => GeneralUtility::formatSize(0)
-        ];
-
-        if ($this->isNoCacheEnabled() === false) {
-            return $imagesOnPage;
-        }
-
-        $count = 0;
-        $totalImageSize = 0;
-        if (!empty($this->getTypoScriptFrontendController()->imagesOnPage)) {
-            foreach ($this->getTypoScriptFrontendController()->imagesOnPage as $file) {
-                $fileSize = @filesize($file);
-                $imagesOnPage['files'][] = [
-                    'name' => $file,
-                    'size' => $fileSize,
-                    'sizeHuman' => GeneralUtility::formatSize($fileSize)
-                ];
-                $totalImageSize += $fileSize;
-                $count++;
-            }
-        }
-        $imagesOnPage['totalSize'] = GeneralUtility::formatSize($totalImageSize);
-        $imagesOnPage['total'] = $count;
-
-        return $imagesOnPage;
-    }
-
-    /**
-     * Gets the document size from the current page in a human readable format
-     * @return string
-     */
-    protected function collectDocumentSize(): string
-    {
-        $documentSize = 0;
-        if ($this->isNoCacheEnabled() === true) {
-            $documentSize = \mb_strlen($this->getTypoScriptFrontendController()->content, 'UTF-8');
-        }
-
-        return GeneralUtility::formatSize($documentSize);
-    }
-
-    /**
-     * @return bool
-     */
-    protected function isNoCacheEnabled(): bool
-    {
-        return (bool)$this->getTypoScriptFrontendController()->no_cache;
-    }
-
-    /**
      * @return \Psychomieze\AdminpanelExtended\Service\SystemInformationInterface
      */
     protected function getSystemInformationService(): SystemInformationInterface
