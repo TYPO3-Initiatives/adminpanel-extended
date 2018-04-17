@@ -54,8 +54,17 @@ class QueryInformation implements AdminPanelSubModuleInterface
             $groupedQueries[$identifier] = [
                 'sql' => $query['sql'],
                 'time' => $time + $query['executionMS'],
-                'count' => $count + 1,
+                'count' => $count + 1
             ];
+            if(is_array($query['params'])) {
+                foreach($query['params'] as $k => $param) {
+                    if (is_array($param)) {
+                        $query['params'][$k] = implode(',', $param);
+                    }
+                }
+            }
+            $groupedQueries[$identifier]['queries'][] = $query;
+
         }
         uasort(
             $groupedQueries,

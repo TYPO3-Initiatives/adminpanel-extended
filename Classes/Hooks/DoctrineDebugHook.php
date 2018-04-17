@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Hooks;
 
-use Doctrine\DBAL\Logging\DebugStack;
+use Psychomieze\AdminpanelExtended\Modules\DoctrineDebug\CustomDebugStack;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -17,6 +17,6 @@ class DoctrineDebugHook
     {
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $connection = $connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
-        $connection->getConfiguration()->setSQLLogger(new DebugStack());
+        $connection->getConfiguration()->setSQLLogger(new CustomDebugStack());
     }
 }
