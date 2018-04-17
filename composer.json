@@ -13,5 +13,10 @@
   },
   "replace": {
     "introduction": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Psychomieze\\AdminpanelExtended\\": "Classes/"
+    }
   }
 }

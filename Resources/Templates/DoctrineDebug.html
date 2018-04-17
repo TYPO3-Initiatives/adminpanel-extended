@@ -1,20 +1,21 @@
+<h3>Queries</h3>
 <div class="typo3-adminPanel-table-overflow">
     <table class="typo3-adminPanel-table">
         <tr>
             <th>
-                <f:translate key="LLL:EXT:unicorns/Resources/Language/locallang.xlf:sqlQuery"/>
+                <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:sqlQuery"/>
             </th>
             <th>
-                <f:translate key="LLL:EXT:unicorns/Resources/Language/locallang.xlf:queryCount"/>
+                <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryCount"/>
             </th>
             <th>
-                <f:translate key="LLL:EXT:unicorns/Resources/Language/locallang.xlf:queryTime"/>
+                <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryTime"/>
             </th>
         </tr>
         <f:for each="{queries}" as="query">
             <tr>
-                <td title="{query.sql}">
-                    <f:format.crop maxCharacters="120">{query.sql}</f:format.crop>
+                <td>
+                    {query.sql}
                 </td>
                 <td>{query.count}</td>
                 <td><f:format.number decimals="5">{query.time}</f:format.number></td>
