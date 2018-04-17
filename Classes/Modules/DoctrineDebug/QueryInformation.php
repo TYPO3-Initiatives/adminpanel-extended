@@ -49,13 +49,6 @@ class QueryInformation implements AdminPanelSubModuleInterface
         $groupedQueries = [];
         foreach ($queries as $query) {
             $identifier = sha1($query['sql']);
-            $time = $groupedQueries[$identifier]['time'] ?? 0;
-            $count = $groupedQueries[$identifier]['count'] ?? 0;
-            $groupedQueries[$identifier] = [
-                'sql' => $query['sql'],
-                'time' => $time + $query['executionMS'],
-                'count' => $count + 1
-            ];
             if(is_array($query['params'])) {
                 foreach($query['params'] as $k => $param) {
                     if (is_array($param)) {
@@ -63,8 +56,20 @@ class QueryInformation implements AdminPanelSubModuleInterface
                     }
                 }
             }
-            $groupedQueries[$identifier]['queries'][] = $query;
-
+            if (isset($groupedQueries[$identifier])) {
+                $groupedQueries[$identifier]['count']++;
+                $groupedQueries[$identifier]['time'] += $query['executionMS'];
+                $groupedQueries[$identifier]['queries'][] = $query;
+            } else {
+                $groupedQueries[$identifier] = [
+                    'sql' => $query['sql'],
+                    'time' => $query['executionMS'],
+                    'count' => 1,
+                    'queries' => [
+                        $query
+                    ]
+                ];
+            }
         }
         uasort(
             $groupedQueries,
