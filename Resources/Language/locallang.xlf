@@ -14,7 +14,7 @@
 				<source>Count</source>
 			</trans-unit>
 			<trans-unit id="queryTime">
-				<source>Total Time</source>
+				<source>Total Time [ms]</source>
 			</trans-unit>
 		</body>
 	</file>

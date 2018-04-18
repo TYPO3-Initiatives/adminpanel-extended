@@ -12,4 +12,7 @@ if (TYPO3_MODE === 'FE') {
             ]
         ]
     ];
+
+    $scOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
+    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = new \Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\DummyFirstLevelArrayObject($scOptions);
 }

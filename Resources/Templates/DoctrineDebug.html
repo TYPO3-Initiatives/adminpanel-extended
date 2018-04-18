@@ -1,61 +1,87 @@
+<html xmlns:adm="http://typo3.org/ns/TYPO3/CMS/Adminpanel/ViewHelpers"
+      xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+      xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
 <div class="typo3-adminPanel-sql">
     <div class="typo3-adminPanel-row typo3-adminPanel-sql-header">
+        <div class="typo3-adminPanel-col col-icon"></div>
         <div class="typo3-adminPanel-col col">
             <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:sqlQuery"/>
-        </div>
-        <div class="typo3-adminPanel-col col-2 text-center">
-            <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryTime"/>
         </div>
         <div class="typo3-adminPanel-col col-1 text-right">
             <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryCount"/>
         </div>
+        <div class="typo3-adminPanel-col col-1 text-left">
+            <f:translate key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryTime"/>
+        </div>
     </div>
     <f:for each="{queries}" as="queryCollection">
-        <div class="typo3-adminPanel-sql-panel">
+        <div class="typo3-adminPanel-panel">
             <div class="typo3-adminPanel-row">
-                <div class="typo3-adminPanel-col col typo3-adminPanel-sql-query-ellipsis">
-                    <div class="typo3-adminPanel-sql-panel-trigger" data-typo3-role="typo3-adminPanel-sql-trigger">
+                <div class="typo3-adminPanel-col col-icon">
+                    <a href="#" class="typo3-adminPanel-panel-trigger" data-typo3-role="typo3-adminPanel-panel-trigger">
                         <core:icon identifier="actions-view-list-expand" alternativeMarkupIdentifier="inline"/>
-                    </div>
+                    </a>
+                </div>
+                <div class="typo3-adminPanel-col col typo3-adminPanel-sql-query-ellipsis">
                     {queryCollection.sql}
                 </div>
-                <div class="typo3-adminPanel-col col-1 text-right">
-                    <f:format.number decimals="5">{queryCollection.time}</f:format.number>
-                </div>
+                <div class="typo3-adminPanel-col col-1 text-right">{queryCollection.count}</div>
                 <div class="typo3-adminPanel-col col-1">
                     <div class="typo3-adminPanel-bar">
-                        <div class="typo3-adminPanel-bar-value" style="width:5%;"></div>
+                        <div class="typo3-adminPanel-bar-value" style="width:{queryCollection.time / totalTime * 100}%;">
+                            <f:format.number decimals="2">{queryCollection.time}</f:format.number>
+                        </div>
                     </div>
                 </div>
-                <div class="typo3-adminPanel-col col-1 text-right">{queryCollection.count}</div>
             </div>
-            <div class="typo3-adminPanel-row typo3-adminPanel-sql-panel-collapse"
-                 data-typo3-role="typo3-adminPanel-sql-collapse">
+            <div class="typo3-adminPanel-row typo3-adminPanel-panel-collapse"
+                 data-typo3-role="typo3-adminPanel-panel-collapse">
                 <div class="typo3-adminPanel-col">
-                    <code>{queryCollection.sql}</code>
-                    <f:for each="{queryCollection.queries}" as="query">
-                        <div class="typo3-adminPanel-row">
-                            <div class="typo3-adminPanel-col col-2">
-                                {query.sql}
+                    <pre>{queryCollection.sql}</pre>
+                    <f:for each="{queryCollection.queries}" as="query" iteration="iterator">
+                        <f:if condition="{iterator.isFirst}">
+                            <f:for each="{query.backtrace}" as="value">
+                                <div class="typo3-adminPanel-row">
+                                    <div class="typo3-adminPanel-col col">{value.class}{value.type}{value.function}
+                                    </div>
+                                    <div class="typo3-adminPanel-col col">{value.file}:{value.line}</div>
+                                </div>
+                            </f:for>
+                            <div class="typo3-adminPanel-row typo3-adminPanel-sql-queries-header">
+                                <div class="typo3-adminPanel-col col-icon"></div>
+                                <f:for each="{query.params}" as="value" iteration="param">
+                                    <div class="typo3-adminPanel-col col">dcValue{param.cycle}</div>
+                                </f:for>
+                                <div class="typo3-adminPanel-col col-1">
+                                    <f:translate
+                                            key="LLL:EXT:adminpanel_extended/Resources/Language/locallang.xlf:queryTime"/>
+                                </div>
                             </div>
-
+                        </f:if>
+                        <div class="typo3-adminPanel-row">
+                            <div class="typo3-adminPanel-col col-icon">
+                                <a href="#">
+                                    <core:icon identifier="actions-edit-copy" alternativeMarkupIdentifier="inline"/>
+                                </a>
+                            </div>
                             <f:for each="{query.params}" as="value">
                                 <div class="typo3-adminPanel-col col">{value}</div>
                             </f:for>
 
-                            <div class="typo3-adminPanel-col col-2">
-                                <f:format.number decimals="5">{query.executionMS}</f:format.number>
+                            <div class="typo3-adminPanel-col col-1">
+                                <div class="typo3-adminPanel-bar">
+                                    <div class="typo3-adminPanel-bar-value"
+                                         style="width:{query.executionMS * 1000 / totalTime * 100}%;">
+                                        <f:format.number decimals="2">{query.executionMS * 1000}</f:format.number>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <f:for each="{query.backtrace}" as="value">
-                            <div class="typo3-adminPanel-row">
-                                <div class="typo3-adminPanel-col col">{value.class}{value.type}{value.function}</div>
-                                <div class="typo3-adminPanel-col col">{value.file}:{value.line}</div>
-                            </div>
-                        </f:for>
                     </f:for>
                 </div>
             </div>
         </div>
     </f:for>
 </div>
+</html>

@@ -34,7 +34,8 @@ class QueryInformation implements AdminPanelSubModuleInterface
         $view->setTemplatePathAndFilename(
             'typo3conf/ext/adminpanel_extended/Resources/Templates/DoctrineDebug.html'
         );
-        $view->assign('queries', $groupedQueries ?? []);
+        $totalTime = array_sum(array_column($logger->queries, 'executionMS')) * 1000;
+        $view->assign('queries', $groupedQueries ?? [])->assign('totalTime', $totalTime);
         return $view->render();
 
     }
@@ -48,7 +49,7 @@ class QueryInformation implements AdminPanelSubModuleInterface
     {
         $groupedQueries = [];
         foreach ($queries as $query) {
-            $identifier = sha1($query['sql']);
+            $identifier = sha1($query['sql']) . sha1(implode(',', $query['backtrace']));
             if(is_array($query['params'])) {
                 foreach($query['params'] as $k => $param) {
                     if (is_array($param)) {
@@ -58,12 +59,12 @@ class QueryInformation implements AdminPanelSubModuleInterface
             }
             if (isset($groupedQueries[$identifier])) {
                 $groupedQueries[$identifier]['count']++;
-                $groupedQueries[$identifier]['time'] += $query['executionMS'];
+                $groupedQueries[$identifier]['time'] += ($query['executionMS'] * 1000);
                 $groupedQueries[$identifier]['queries'][] = $query;
             } else {
                 $groupedQueries[$identifier] = [
                     'sql' => $query['sql'],
-                    'time' => $query['executionMS'],
+                    'time' => ($query['executionMS'] * 1000),
                     'count' => 1,
                     'queries' => [
                         $query
@@ -74,7 +75,7 @@ class QueryInformation implements AdminPanelSubModuleInterface
         uasort(
             $groupedQueries,
             function ($a, $b) {
-                return $b['count'] <=> $a['count'];
+                return $b['time'] <=> $a['time'];
             }
         );
         return $groupedQueries;

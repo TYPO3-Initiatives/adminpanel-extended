@@ -43,6 +43,8 @@ class CustomDebugStack implements SQLLogger
             array_shift($backtrace);
             // remove doctrine execute query
             array_shift($backtrace);
+            // remove queryBuilder execute
+            array_shift($backtrace);
             $this->queries[++$this->currentQuery] = [
                 'sql' => $sql,
                 'params' => $params,
