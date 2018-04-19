@@ -1,0 +1,23 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<div class="typo3-adminPanel-row typo3-adminPanel-row-header">
+    <div class="typo3-adminPanel-col col-6">
+        Signal Class
+    </div>
+    <div class="typo3-adminPanel-col col-6">
+        Signal Name
+    </div>
+    <div class="typo3-adminPanel-col col-6">
+        Arguments
+    </div>
+</div>
+<f:for each="{entries}" as="entry">
+    <div class="typo3-adminPanel-row">
+        <div class="typo3-adminPanel-col col-6">
+            {entry.data.signalClassName}
+        </div>
+        <div class="typo3-adminPanel-col col-6">
+            {entry.data.signalName}
+        </div>
+    </div>
+</f:for>
