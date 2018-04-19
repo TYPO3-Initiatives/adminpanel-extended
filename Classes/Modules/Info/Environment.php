@@ -16,6 +16,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 class Environment implements AdminPanelSubModuleInterface
 {
     /**
+     * Sub-Module content as rendered HTML
+     *
      * @return string
      */
     public function getContent(): string
@@ -23,7 +25,6 @@ class Environment implements AdminPanelSubModuleInterface
         $view = GeneralUtility::makeInstance(StandaloneView::class);
         $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Templates/Info/Environment.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-
 
         $view->assignMultiple([
             'systemEnvironmentInformation' => $this->getSystemInformationService()->collectInformation()
@@ -33,6 +34,9 @@ class Environment implements AdminPanelSubModuleInterface
     }
 
     /**
+     * Identifier for this Sub-module,
+     * for example "preview" or "cache"
+     *
      * @return string
      */
     public function getIdentifier(): string
@@ -41,6 +45,8 @@ class Environment implements AdminPanelSubModuleInterface
     }
 
     /**
+     * Sub-Module label
+     *
      * @return string
      */
     public function getLabel(): string
@@ -49,6 +55,8 @@ class Environment implements AdminPanelSubModuleInterface
     }
 
     /**
+     * Settings as HTML form elements (without wrapping form tag or save button)
+     *
      * @return string
      */
     public function getSettings(): string
@@ -57,11 +65,12 @@ class Environment implements AdminPanelSubModuleInterface
     }
 
     /**
+     * Initialize the module - runs early in a TYPO3 request
+     *
      * @param \TYPO3\CMS\Core\Http\ServerRequest $request
      */
     public function initializeModule(ServerRequest $request): void
     {
-        // TODO: Implement initializeModule() method.
     }
 
     /**
