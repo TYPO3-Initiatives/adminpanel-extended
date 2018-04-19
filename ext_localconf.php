@@ -26,7 +26,11 @@ if (TYPO3_MODE === 'FE') {
                 ],
             ],
             'info' => [
-                'module' => \Psychomieze\AdminpanelExtended\Modules\InfoModule::class,
+                'submodules' => [
+                    'environment' => [
+                        'module' => \Psychomieze\AdminpanelExtended\Modules\Info\Environment::class
+                    ]
+                ]
             ]
         ]
     );
