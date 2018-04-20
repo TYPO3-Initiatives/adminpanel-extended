@@ -1,0 +1,52 @@
+<h3>User Information</h3>
+
+<table class="typo3-adminPanel-table">
+	<tr>
+		<th>Online Backend Users:</th>
+		<td>{onlineBackendUsers -> f:count()}</td>
+	</tr>
+	<tr>
+		<th>Online Frontend Users:</th>
+		<td>{onlineFrontendUsers}</td>
+	</tr>
+</table>
+
+<f:if condition="{onlineBackendUsers}">
+	<hr>
+
+	<h4>Online Backend Users:</h4>
+
+	<table class="typo3-adminPanel-table">
+		<thead>
+		<tr>
+			<th>User</th>
+			<th>Last Login</th>
+		</tr>
+		</thead>
+
+		<tbody>
+		<f:for each="{onlineBackendUsers}" as="backendUser">
+			<tr>
+				<th>
+					<f:if condition="{backendUser.realName}">
+						<f:then>{backendUser.realName}</f:then>
+						<f:else>{backendUser.username}</f:else>
+					</f:if>
+
+					<f:if condition="{backendUser.isAdministrator}">
+						<span class="label label-success">Admin</span>
+					</f:if>
+				</th>
+				<td>
+					<f:if condition="{backendUser.lastLoginDateAndTime}">
+						<f:then>
+							<f:format.date format="{dateFormat} {timeFormat}">{backendUser.lastLoginDateAndTime}</f:format.date>
+						</f:then>
+						<f:else><span>never</span></f:else>
+					</f:if>
+				</td>
+			</tr>
+		</f:for>
+		</tbody>
+	</table>
+</f:if>
