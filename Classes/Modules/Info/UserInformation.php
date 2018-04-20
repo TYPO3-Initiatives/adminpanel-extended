@@ -29,12 +29,11 @@ class UserInformation implements AdminPanelSubModuleInterface
         $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Templates/Info/UserInformation.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
-        $onlineBackendUsers = $this->findAllActiveBackendUsers();
         $view->assignMultiple([
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'onlineFrontendUsers' => $this->findAllActiveFrontendUsers(),
-            'onlineBackendUsers' => $onlineBackendUsers
+            'onlineBackendUsers' => $this->findAllActiveBackendUsers()
         ]);
 
         return $view->render();
