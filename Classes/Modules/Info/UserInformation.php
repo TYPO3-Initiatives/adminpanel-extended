@@ -91,28 +91,19 @@ class UserInformation implements AdminPanelSubModuleInterface
             ->from('fe_sessions')
             ->groupBy('ses_userid')
             ->execute()
-            ->fetch();
+            ->fetchColumn();
 
-        return $onlineUsersCount['COUNT(*)'];
+        return (int)$onlineUsersCount;
     }
 
     /**
-     * @return array
+     * @return int
      */
-    protected function findAllActiveBackendUsers(): array
+    protected function findAllActiveBackendUsers(): int
     {
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $backendUserSessionRepository = $objectManager->get(BackendUserSessionRepository::class);
-        $activeBackendUserSessions = $backendUserSessionRepository->findAllActive();
 
-        $onlineBackendUsers = [];
-
-        $backendUserRepository = $objectManager->get(BackendUserRepository::class);
-
-        foreach ($activeBackendUserSessions as $userSession) {
-            $onlineBackendUsers[] = $backendUserRepository->findByUid($userSession['ses_userid']);
-        }
-
-        return $onlineBackendUsers;
+        return count($backendUserSessionRepository->findAllActive());
     }
 }
