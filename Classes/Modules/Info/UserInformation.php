@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Modules\Info;
 
+use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
 use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserRepository;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -30,6 +30,7 @@ class UserInformation implements AdminPanelSubModuleInterface
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
         $view->assignMultiple([
+            'isPageBeingEdited' => $this->isPageLocked(),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'onlineFrontendUsers' => $this->findAllActiveFrontendUsers(),
@@ -80,23 +81,21 @@ class UserInformation implements AdminPanelSubModuleInterface
     }
 
     /**
+     * Find all fe user sessions and return the total.
+     *
      * @return int
      */
     protected function findAllActiveFrontendUsers(): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('fe_sessions');
+        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
+        $frontendUserSessionReposiotry = $objectManager->get(FrontendUserSessionRepository::class);
 
-        $onlineUsersCount = $queryBuilder->count('*')
-            ->from('fe_sessions')
-            ->groupBy('ses_userid')
-            ->execute()
-            ->fetchColumn();
-
-        return (int)$onlineUsersCount;
+        return \count($frontendUserSessionReposiotry->findAllActive());
     }
 
     /**
+     * Find all be user sessions and return the total.
+     *
      * @return int
      */
     protected function findAllActiveBackendUsers(): int
@@ -104,6 +103,16 @@ class UserInformation implements AdminPanelSubModuleInterface
         $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
         $backendUserSessionRepository = $objectManager->get(BackendUserSessionRepository::class);
 
-        return count($backendUserSessionRepository->findAllActive());
+        return \count($backendUserSessionRepository->findAllActive());
+    }
+
+    /**
+     * Returns true if someone else is editing the current page. Otherwise returns false.
+     *
+     * @return bool
+     */
+    protected function isPageLocked(): bool
+    {
+        return (bool)BackendUtility::isRecordLocked('pages',$GLOBALS['TSFE']->id);
     }
 }
