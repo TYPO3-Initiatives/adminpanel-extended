@@ -14,7 +14,7 @@ use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 class FrontendUserSessionRepository extends FrontendUserRepository
 {
     /**
-     * Find all active sessions for all backend users
+     * Find all active sessions for all frontend users.
      *
      * @return array
      */
