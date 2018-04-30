@@ -1,0 +1,58 @@
+<h3>PHP</h3>
+
+<table class="typo3-adminPanel-table">
+	<tr>
+		<th>PHP Version</th>
+		<td>{phpVersion}</td>
+	</tr>
+	<tr>
+		<th>PHP Uname</th>
+		<td>{phpUname}</td>
+	</tr>
+	<tr>
+		<th>PHP SAPI</th>
+		<td>{phpSapi}</td>
+	</tr>
+	<tr>
+		<th>Peak Memory Usage</th>
+		<td>
+			<f:format.bytes>{phpMem}</f:format.bytes>
+		</td>
+	</tr>
+</table>
+
+<hr>
+<h4>PHP Configuration</h4>
+<table class="typo3-adminPanel-table">
+	<tr>
+		<th>Property Name</th>
+		<th>Global Value</th>
+		<th>Local Value</th>
+		<th>Access</th>
+	</tr>
+	<f:for each="{phpConfig}" as="value" key="propertyName">
+		<tr>
+			<th>{propertyName}</th>
+			<td>{value.global_value}</td>
+			<td>{value.local_value}</td>
+			<td>{value.access}</td>
+		</tr>
+	</f:for>
+</table>
+
+<hr>
+
+<h4>Constants</h4>
+<table class="typo3-adminPanel-table">
+	<f:for each="{constants.user}" as="constant" key="constName">
+		<tr>
+			<th>{constName}</th>
+			<td>{constant}</td>
+		</tr>
+	</f:for>
+</table>
+
+<hr>
+
+<h4>Extensions</h4>
+{loadedExtensions}
