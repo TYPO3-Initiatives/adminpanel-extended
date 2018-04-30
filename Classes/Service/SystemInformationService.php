@@ -160,21 +160,24 @@ final class SystemInformationService implements SingletonInterface, SystemInform
      */
     private function getOperatingSystem(): array
     {
-        $kernelName = php_uname('s');
-        switch (strtolower($kernelName)) {
-            case 'linux':
+        switch (PHP_OS_FAMILY) {
+            case 'Linux':
                 $icon = 'linux';
                 break;
-            case 'darwin':
+            case 'Darwin':
                 $icon = 'apple';
                 break;
-            default:
+            case 'Windows':
                 $icon = 'windows';
+                break;
+            default:
+                //todo: find proper icon
+                $icon = 'unknown';
         }
 
         return [
             'title' => 'LLL:EXT:lang/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.operatingsystem',
-            'value' => $kernelName . ' ' . php_uname('r'),
+            'value' => php_uname('s') . ' ' . php_uname('r'),
             'iconIdentifier' => 'sysinfo-os-' . $icon
         ];
     }
