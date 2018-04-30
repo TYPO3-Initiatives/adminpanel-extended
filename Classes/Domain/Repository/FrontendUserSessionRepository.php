@@ -49,6 +49,7 @@ class FrontendUserSessionRepository extends FrontendUserRepository
      */
     protected function getSessionBackend(): SessionBackendInterface
     {
-        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('FE');
+        return GeneralUtility::makeInstance(SessionManager::class)
+            ->getSessionBackend('FE');
     }
 }

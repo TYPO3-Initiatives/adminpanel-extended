@@ -87,8 +87,8 @@ class UserInformation implements AdminPanelSubModuleInterface
      */
     protected function findAllActiveFrontendUsers(): int
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $frontendUserSessionReposiotry = $objectManager->get(FrontendUserSessionRepository::class);
+        $frontendUserSessionReposiotry = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(FrontendUserSessionRepository::class);
 
         return \count($frontendUserSessionReposiotry->findAllActive());
     }
@@ -100,8 +100,8 @@ class UserInformation implements AdminPanelSubModuleInterface
      */
     protected function findAllActiveBackendUsers(): int
     {
-        $objectManager = GeneralUtility::makeInstance(ObjectManager::class);
-        $backendUserSessionRepository = $objectManager->get(BackendUserSessionRepository::class);
+        $backendUserSessionRepository = GeneralUtility::makeInstance(ObjectManager::class)
+            ->get(BackendUserSessionRepository::class);
 
         return \count($backendUserSessionRepository->findAllActive());
     }
@@ -113,6 +113,6 @@ class UserInformation implements AdminPanelSubModuleInterface
      */
     protected function isPageLocked(): bool
     {
-        return (bool)BackendUtility::isRecordLocked('pages',$GLOBALS['TSFE']->id);
+        return (bool)BackendUtility::isRecordLocked('pages', $GLOBALS['TSFE']->id);
     }
 }
