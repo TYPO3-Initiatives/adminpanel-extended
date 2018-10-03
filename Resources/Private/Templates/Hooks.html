@@ -1,0 +1,30 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<div class="typo3-adminPanel-table-overflow">
+    <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+        <thead>
+        <tr>
+            <th scope="col" class="typo3-adminPanel-table-cell-key">
+                <f:translate
+                        key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.hooks.registration"/>
+            </th>
+            <th scope="col" class="typo3-adminPanel-table-cell-key">
+                <f:translate
+                        key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.hooks.callee"/>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{entries}" as="entry">
+            <tr>
+                <td>
+                    {entry.data.hook}
+                </td>
+                <td>
+                    {entry.data.backtrace.0.class}{entry.data.backtrace.0.type}{entry.data.backtrace.0.function}
+                </td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+</div>

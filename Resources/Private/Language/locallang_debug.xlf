@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1521629231" source-language="en" datatype="plaintext" original="messages" date="2018-03-21T11:47:00Z"
+		  product-name="adminpanel-extended">
+		<header/>
+		<body>
+			<trans-unit id="submodule.signals.label">
+				<source>Signals</source>
+			</trans-unit>
+			<trans-unit id="submodule.signals.className">
+				<source>Class Name</source>
+			</trans-unit>
+			<trans-unit id="submodule.signals.signalName">
+				<source>Signal Name</source>
+			</trans-unit>
+			<trans-unit id="submodule.signals.arguments">
+				<source>Arguments</source>
+			</trans-unit>
+			<trans-unit id="submodule.signals.noSignals">
+				<source>No signals were sent during the current page request.</source>
+			</trans-unit>
+			<trans-unit id="submodule.hooks.registration">
+				<source>Registration</source>
+			</trans-unit>
+			<trans-unit id="submodule.hooks.callee">
+				<source>Called in</source>
+			</trans-unit>
+			<trans-unit id="submodule.hooks.label">
+				<source>Hooks</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

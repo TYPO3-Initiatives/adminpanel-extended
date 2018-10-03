@@ -1,0 +1,50 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+      data-namespace-typo3-fluid="true">
+<f:if condition="{signals}">
+    <f:then>
+        <div class="typo3-adminPanel-table-overflow">
+            <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+                <thead>
+                <tr>
+                    <th scope="col" class="typo3-adminPanel-table-cell-key">
+                        <f:translate
+                                key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.signals.className"/>
+                    </th>
+                    <th scope="col">
+                        <f:translate
+                                key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.signals.signalName"/>
+                    </th>
+                    <th scope="col">
+                        <f:translate
+                                key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.signals.arguments"/>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <f:for each="{signals}" as="signal" key="signalId">
+                    <tr>
+                        <td>
+                            {signal.data.signalClassName}
+                        </td>
+                        <td>
+                            {signal.data.signalName}
+                        </td>
+                        <td>
+                            <a href="#" data-typo3-role="signal-link" data-typo3-ajax-url="{signalDataUri}&signalId={signalId}" data-typo3-signal-id="{signalId}">Get Arguments</a>
+                        </td>
+                    </tr>
+                </f:for>
+                </tbody>
+            </table>
+        </div>
+    </f:then>
+    <f:else>
+        <div class="typo3-adminPanel-message typo3-adminPanel-message-info">
+            <div class="typo3-adminPanel-message-text">
+                <f:translate
+                        key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.signals.noSignals"/>
+            </div>
+        </div>
+    </f:else>
+</f:if>
+</html>

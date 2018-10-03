@@ -4,14 +4,19 @@ declare(strict_types=1);
 namespace Psychomieze\AdminpanelExtended\Modules\HooksAndSignals;
 
 
-use Psychomieze\AdminpanelExtended\Logger\Log;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Http\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class Signals implements AdminPanelSubModuleInterface
+class Signals implements ModuleInterface, ContentProviderInterface, DataProviderInterface, ResourceProviderInterface
 {
 
     /**
@@ -19,28 +24,31 @@ class Signals implements AdminPanelSubModuleInterface
      *
      * @return string
      */
-    public function getContent(): string
+    public function getContent(ModuleData $moduleData): string
     {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cache = $cacheManager->getCache('cache_runtime');
-        $backend = $cache->getBackend();
-        $entryKeys = $backend->findIdentifiersByTag('TYPO3_CMS_Extbase_SignalSlot_Dispatcher');
-        $entries = [];
-        foreach ($entryKeys ?? [] as $entry) {
-            $entries[] = $cache->get($entry);
-        }
-        $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Templates/HooksAndSignals/Signals.html';
-        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
-
-        $view->assignMultiple(
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $uri = $uriBuilder->buildUriFromRoute(
+            'ajax_adminPanelExtended_signalData',
             [
-                'entries' => $entries,
+                'requestId' => $moduleData['requestId']
+            ]
+        );
+        $view = GeneralUtility::makeInstance(StandaloneView::class);
+        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Signals.html';
+        $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
+        $view->setPartialRootPaths(
+            [
+                'EXT:adminpanel/Resources/Private/Partials',
+                'EXT:adminpanel_extended/Resources/Private/Partials',
             ]
         );
 
+        $view->assign('signals', $moduleData['signals'])
+            ->assign('signalDataUri', $uri);
+
         return $view->render();
     }
+
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
@@ -49,7 +57,7 @@ class Signals implements AdminPanelSubModuleInterface
      */
     public function getIdentifier(): string
     {
-        return 'hs-signals';
+        return 'debug_signals';
     }
 
     /**
@@ -59,26 +67,65 @@ class Signals implements AdminPanelSubModuleInterface
      */
     public function getLabel(): string
     {
-        return 'Signals';
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.signals.label'
+        );
     }
 
     /**
-     * Settings as HTML form elements (without wrapping form tag or save button)
-     *
-     * @return string
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
      */
-    public function getSettings(): string
+    /**
+     * @inheritdoc
+     */
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        return '';
+        $log = InMemoryLogWriter::$log;
+        $signals = array_filter(
+            $log,
+            function (LogRecord $entry) {
+                return $entry->getComponent() === 'TYPO3.CMS.Extbase.SignalSlot.Dispatcher';
+            }
+        );
+        $entries = [];
+        foreach ($signals as $signal) {
+            $entries[uniqid('signal-', false)] = $signal;
+        }
+        return new ModuleData(
+            [
+                'signals' => $entries,
+                'requestId' => $request->getAttribute('adminPanelRequestId')
+            ]
+        );
     }
 
     /**
-     * Initialize the module - runs early in a TYPO3 request
+     * Returns a string array with javascript files that will be rendered after the module
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
      *
-     * @param \TYPO3\CMS\Core\Http\ServerRequest $request
+     * @return array
      */
-    public function initializeModule(ServerRequest $request): void
+    public function getJavaScriptFiles(): array
     {
-        // TODO: Implement initializeModule() method.
+        return [
+            'EXT:adminpanel_extended/Resources/Public/JavaScript/Signals.js'
+        ];
+    }
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
+     *
+     * @return array
+     */
+    public function getCssFiles(): array
+    {
+        return [];
+    }
+
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }

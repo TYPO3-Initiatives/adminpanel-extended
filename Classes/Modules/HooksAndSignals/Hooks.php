@@ -4,43 +4,36 @@ declare(strict_types=1);
 namespace Psychomieze\AdminpanelExtended\Modules\HooksAndSignals;
 
 
-use Psychomieze\AdminpanelExtended\Logger\Log;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Http\ServerRequest;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Adminpanel\Log\InMemoryLogWriter;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\InitializableInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
-class Hooks implements AdminPanelSubModuleInterface
+class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderInterface, InitializableInterface
 {
 
     /**
      * Sub-Module content as rendered HTML
      *
+     * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $moduleData
      * @return string
      */
-    public function getContent(): string
+    public function getContent(ModuleData $moduleData): string
     {
-        $cacheManager = GeneralUtility::makeInstance(CacheManager::class);
-        $cache = $cacheManager->getCache('cache_runtime');
-        $backend = $cache->getBackend();
-        $entryKeys = $backend->findIdentifiersByTag('adminpanel');
-        $entries = [];
-        foreach ($entryKeys ?? [] as $entry) {
-            $entries[] = $cache->get($entry);
-        }
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Templates/HooksAndSignals/Hooks.html';
+        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Hooks.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
-        $view->assignMultiple(
-            [
-                'entries' => $entries,
-            ]
-        );
-
+        $view->assign('entries', $moduleData['hooks']);
         return $view->render();
     }
+
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
@@ -49,7 +42,7 @@ class Hooks implements AdminPanelSubModuleInterface
      */
     public function getIdentifier(): string
     {
-        return 'hs-hooks';
+        return 'debug_hooks';
     }
 
     /**
@@ -59,26 +52,47 @@ class Hooks implements AdminPanelSubModuleInterface
      */
     public function getLabel(): string
     {
-        return 'Hooks';
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.hooks.label'
+        );
     }
 
     /**
-     * Settings as HTML form elements (without wrapping form tag or save button)
-     *
-     * @return string
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
      */
-    public function getSettings(): string
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        return '';
+        $log = InMemoryLogWriter::$log;
+        $entries = array_filter(
+            $log,
+            function (LogRecord $entry) {
+                return $entry->getComponent() === 'Psychomieze.AdminpanelExtended.Modules.HooksAndSignals.LoggedArray';
+            }
+        );
+        return new ModuleData(
+            [
+                'hooks' => $entries,
+            ]
+        );
     }
 
     /**
      * Initialize the module - runs early in a TYPO3 request
      *
-     * @param \TYPO3\CMS\Core\Http\ServerRequest $request
+     * @param ServerRequestInterface $request
      */
-    public function initializeModule(ServerRequest $request): void
+    public function initializeModule(ServerRequestInterface $request): void
     {
-        // TODO: Implement initializeModule() method.
+        // overwrite SC_OPTIONS to track calls - ugly, but there's no other registry for hooks
+        $scOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = new DummyFirstLevelArrayObject(
+            $scOptions
+        );
+    }
+
+    protected function getLanguageService()
+    {
+        return $GLOBALS['LANG'];
     }
 }
