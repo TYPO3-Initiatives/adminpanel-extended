@@ -1,10 +1,10 @@
 <?php
 
-$EM_CONF['adminpanel_extended'] = [
+$EM_CONF[$_EXTKEY] = [
 	'title' => 'Adminpanel Extended',
 	'description' => 'Extended functionality for the admin panel',
 	'category' => 'frontend',
-	'version' => '0.0.1',
+	'version' => '0.0.2',
 	'state' => 'alpha',
 	'clearcacheonload' => 1,
 	'author' => 'Susanne Moog',
