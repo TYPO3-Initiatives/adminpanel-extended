@@ -9,7 +9,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
-use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -19,7 +19,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class UserInformation
  */
-class UserInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface
+class UserInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ResourceProviderInterface
 {
     /**
      * Identifier for this Sub-module,
@@ -79,34 +79,27 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
     }
 
     /**
-     * Identifier for this Sub-module,
-     * for example "preview" or "cache"
+     * Returns a string array with javascript files that will be rendered after the module
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
      *
-     * @return string
+     * @return array
      */
-    public function getIdentifier(): string
+    public function getJavaScriptFiles(): array
     {
-        return 'info-userinformation';
+        return [];
     }
 
     /**
-     * Sub-Module label
+     * Returns a string array with css files that will be rendered after the module
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
      *
-     * @return string
+     * @return array
      */
-    public function getLabel(): string
+    public function getCssFiles(): array
     {
-        return 'Users';
-    }
-
-    /**
-     * Settings as HTML form elements (without wrapping form tag or save button)
-     *
-     * @return string
-     */
-    public function getSettings(): string
-    {
-        return '';
+        return [
+            'EXT:adminpanel_extended/Resources/Public/Css/Messages.css'
+        ];
     }
 
     /**

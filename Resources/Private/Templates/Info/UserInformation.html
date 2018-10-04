@@ -1,17 +1,32 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
-	  data-namespace-typo3-fluid="true">
+      data-namespace-typo3-fluid="true">
 <f:if condition="{isPageBeingEdited}">
-	<span class="alert alert-warning">Someone is currently editing this page.</span>
+    <div class="typo3-adminPanel-message typo3-adminPanel-message-warning">
+        <div class="typo3-adminPanel-message-text">Someone is currently editing this page.</div>
+    </div>
 </f:if>
-
-<table class="typo3-adminPanel-table">
-	<tr>
-		<th>Online Backend Users:</th>
-		<td>{onlineBackendUsers}</td>
-	</tr>
-	<tr>
-		<th>Online Frontend Users:</th>
-		<td>{onlineFrontendUsers}</td>
-	</tr>
-</table>
+<div class="typo3-adminPanel-table-overflow">
+    <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+        <thead>
+            <tr>
+                <th scope="col" class="typo3-adminPanel-table-cell-key">
+                    <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:key"/>
+                </th>
+                <th scope="col">
+                    <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_info.xlf:value"/>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="typo3-adminPanel-table-cell-key" scope="col">Online Backend Users:</th>
+                <td scope="col">{onlineBackendUsers}</td>
+            </tr>
+            <tr>
+                <th class="typo3-adminPanel-table-cell-key" scope="col">Online Frontend Users:</th>
+                <td scope="col">{onlineFrontendUsers}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 </html>
