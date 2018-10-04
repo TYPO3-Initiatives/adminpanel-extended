@@ -34,7 +34,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
             ]
         );
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Signals.html';
+        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Debug/Signals.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
         $view->setPartialRootPaths(
             [
