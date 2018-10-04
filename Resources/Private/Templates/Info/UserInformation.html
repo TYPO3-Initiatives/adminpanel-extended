@@ -2,7 +2,10 @@
       data-namespace-typo3-fluid="true">
 <f:if condition="{isPageBeingEdited}">
     <div class="typo3-adminPanel-message typo3-adminPanel-message-warning">
-        <div class="typo3-adminPanel-message-text">Someone is currently editing this page.</div>
+        <div class="typo3-adminPanel-message-text">
+            <f:translate
+                    key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_info.xlf:submodule.userinformation.isLockedPage"/>
+            </div>
     </div>
 </f:if>
 <div class="typo3-adminPanel-table-overflow">
@@ -19,11 +22,17 @@
         </thead>
         <tbody>
             <tr>
-                <th class="typo3-adminPanel-table-cell-key" scope="col">Online Backend Users:</th>
+                <th class="typo3-adminPanel-table-cell-key" scope="col">
+                    <f:translate
+                            key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_info.xlf:submodule.userinformation.onlineBackendUsers"/>
+                </th>
                 <td scope="col">{onlineBackendUsers}</td>
             </tr>
             <tr>
-                <th class="typo3-adminPanel-table-cell-key" scope="col">Online Frontend Users:</th>
+                <th class="typo3-adminPanel-table-cell-key" scope="col">
+                    <f:translate
+                            key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_info.xlf:submodule.userinformation.onlineFrontendUsers"/>
+                </th>
                 <td scope="col">{onlineFrontendUsers}</td>
             </tr>
         </tbody>

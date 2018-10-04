@@ -7,6 +7,18 @@
 			<trans-unit id="submodule.userinformation.label">
 				<source>Users</source>
 			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineBackendUsers">
+				<source>Online Backend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineFrontendUsers">
+				<source>Online Frontend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineFrontendUsers">
+				<source>Online Frontend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.isLockedPage">
+				<source>Someone is currently editing this page.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
