@@ -3,8 +3,11 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Modules\Info;
 
+use Psr\Http\Message\ServerRequestInterface;
 use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
+use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -16,8 +19,31 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class UserInformation
  */
-class UserInformation implements ModuleInterface, ContentProviderInterface
+class UserInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface
 {
+    /**
+     * Identifier for this Sub-module,
+     * for example "preview" or "cache"
+     *
+     * @return string
+     */
+    public function getIdentifier(): string
+    {
+        return 'info_userinformation';
+    }
+
+    /**
+     * Sub-Module label
+     *
+     * @return string
+     */
+    public function getLabel(): string
+    {
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_info.xlf:submodule.userinformation.label'
+        );
+    }
+
     /**
      * Sub-Module content as rendered HTML
      *
@@ -30,15 +56,26 @@ class UserInformation implements ModuleInterface, ContentProviderInterface
         $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Info/UserInformation.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
-        $view->assignMultiple([
+        $view->assignMultiple($moduleData->getArrayCopy());
+
+        return $view->render();
+    }
+
+    /**
+     * Prepare module data
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     * @return \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
+     */
+    public function getDataToStore(ServerRequestInterface $request): ModuleData
+    {
+        return new ModuleData([
             'isPageBeingEdited' => $this->isPageLocked(),
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'onlineFrontendUsers' => $this->findAllActiveFrontendUsers(),
             'onlineBackendUsers' => $this->findAllActiveBackendUsers()
         ]);
-
-        return $view->render();
     }
 
     /**
