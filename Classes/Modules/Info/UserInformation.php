@@ -4,10 +4,11 @@ declare(strict_types=1);
 namespace Psychomieze\AdminpanelExtended\Modules\Info;
 
 use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
-use TYPO3\CMS\Adminpanel\Modules\AdminPanelSubModuleInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -15,14 +16,14 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class UserInformation
  */
-class UserInformation implements AdminPanelSubModuleInterface
+class UserInformation implements ModuleInterface, ContentProviderInterface
 {
     /**
      * Sub-Module content as rendered HTML
      *
      * @return string
      */
-    public function getContent(): string
+    public function getContent(ModuleData $moduleData): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
 
@@ -69,15 +70,6 @@ class UserInformation implements AdminPanelSubModuleInterface
     public function getSettings(): string
     {
         return '';
-    }
-
-    /**
-     * Initialize the module - runs early in a TYPO3 request
-     *
-     * @param \TYPO3\CMS\Core\Http\ServerRequest $request
-     */
-    public function initializeModule(ServerRequest $request): void
-    {
     }
 
     /**
