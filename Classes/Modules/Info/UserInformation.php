@@ -27,7 +27,7 @@ class UserInformation implements ModuleInterface, ContentProviderInterface
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
 
-        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Templates/Info/UserInformation.html';
+        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Info/UserInformation.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
         $view->assignMultiple([
