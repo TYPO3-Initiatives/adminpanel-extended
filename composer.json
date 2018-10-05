@@ -35,11 +35,11 @@
     }
   },
   "scripts": {
-    "create-extension-directory": "mkdir -p .Build/web/typo3conf/ext",
-    "link-package": "ln -snvf ../../../../. .Build/web/typo3conf/ext/adminpanel_extended",
     "post-update-cmd": [
-      "@create-extension-directory",
-      "@link-package"
+      "@ensure-extension-structure"
+    ],
+    "ensure-extension-structure": [
+      "Psychomieze\\AdminpanelExtended\\Composer\\ScriptHelper::ensureExtensionStructure"
     ]
   }
 }
