@@ -18,7 +18,7 @@ final class ScriptHelper
         }
 
         if (!is_link(self::LINK)) {
-            symlink('../../../../.', self::LINK);
+            symlink(dirname(__DIR__, 2) . '/', self::LINK);
         }
     }
 }
