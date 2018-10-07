@@ -3,7 +3,7 @@ const Signals = {};
 Signals.initializeSignalDetails = function () {
     const signallinks = document.querySelectorAll('[data-typo3-role=signal-link]');
     for (let i = 0; i < signallinks.length; i++) {
-        signallinks[i].addEventListener("click", Signals.getSignalData)
+        signallinks[i].addEventListener("click", Signals.getSignalData);
     }
 };
 
