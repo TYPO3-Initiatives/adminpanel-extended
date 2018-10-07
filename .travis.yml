@@ -1,0 +1,37 @@
+# .travis.yml
+sudo: false
+language: php
+
+php:
+- 7.2
+
+env:
+- TYPO3_VERSION=^9
+
+addons:
+  apt:
+    packages:
+    - parallel
+
+install:
+- composer require typo3/minimal:${TYPO3_VERSION}
+- git checkout composer.json
+- export TYPO3_PATH_WEB="$PWD/.Build/web"
+
+script:
+- >
+  echo;
+  echo "Unit tests";
+  .Build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml --coverage-clover .Build/coverage.xml
+
+- >
+  echo;
+  echo "PHP lint";
+  find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+
+after_script:
+- .Build/vendor/bin/codacycoverage clover .Build/coverage.xml
+
+cache:
+  directories:
+  - $HOME/.composer/cache

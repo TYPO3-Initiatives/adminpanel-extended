@@ -5,18 +5,49 @@
   "description": "TYPO3 AdminPanel Extended",
   "homepage": "https://typo3.org",
   "require": {
-    "typo3/cms-adminpanel": "9.5.*@dev"
+    "typo3/cms-adminpanel": "9.5.*@dev",
+    "typo3/testing-framework": "^4.9",
+    "codacy/coverage": "^1.4"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
+    "typo3/cms-install": "9.5.*@dev",
+    "typo3/cms-extensionmanager": "9.5.*@dev",
+    "typo3/cms-recordlist": "9.5.*@dev",
     "slevomat/coding-standard": "^4.8"
   },
   "replace": {
-    "introduction": "*"
+    "adminpanel_extended": "self.version"
   },
   "autoload": {
     "psr-4": {
       "Psychomieze\\AdminpanelExtended\\": "Classes/"
     }
+  },
+  "config": {
+    "vendor-dir": ".Build/vendor",
+    "bin-dir": ".Build/bin"
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "adminpanel_extended",
+      "cms-package-dir": "{$vendor-dir}/typo3/cms",
+      "app-dir": ".Build",
+      "web-dir": ".Build/web"
+    }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "@ensure-extension-structure"
+    ],
+    "ensure-extension-structure": [
+      "Psychomieze\\AdminpanelExtended\\Composer\\ScriptHelper::ensureExtensionStructure"
+    ],
+    "test:php:unit": [
+      "@php .build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml"
+    ],
+    "test": [
+      "@test:php:unit"
+    ]
   }
 }
