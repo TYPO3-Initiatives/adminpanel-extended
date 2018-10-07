@@ -45,9 +45,9 @@ Signals.getSignalData = function (event) {
         const table = document.createElement('table');
         table.classList.add('typo3-adminPanel-table');
         for (let item in myArr.data) {
-            const row = document.createElement('tr');
-            let col = document.createElement('td');
             if (myArr.data.hasOwnProperty(item)) {
+                const row = document.createElement('tr');
+                let col = document.createElement('td');
                 let datum = myArr.data[item];
                 if (typeof(datum) === "object") {
                     col = buildInnerTable(datum, col);
