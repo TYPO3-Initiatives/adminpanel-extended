@@ -8,7 +8,8 @@
     "typo3/cms-adminpanel": "9.5.*@dev"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master"
+    "roave/security-advisories": "dev-master",
+    "slevomat/coding-standard": "^4.8"
   },
   "replace": {
     "introduction": "*"
