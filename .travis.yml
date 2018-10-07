@@ -22,12 +22,15 @@ script:
 - >
   echo;
   echo "Unit tests";
-  .Build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml
+  .Build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml --coverage-clover .Build/coverage.xml
 
 - >
   echo;
   echo "PHP lint";
   find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
+
+after_script:
+- .Build/vendor/bin/codacycoverage clover .Build/coverage.xml
 
 cache:
   directories:
