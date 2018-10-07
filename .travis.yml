@@ -30,7 +30,7 @@ script:
   find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
 after_script:
-- .Build/vendor/bin/codacycoverage clover .Build/coverage.xml
+- .Build/bin/codacycoverage clover .Build/coverage.xml
 
 cache:
   directories:
