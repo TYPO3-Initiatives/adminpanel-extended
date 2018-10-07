@@ -85,7 +85,7 @@ class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderIn
     public function initializeModule(ServerRequestInterface $request): void
     {
         // overwrite SC_OPTIONS to track calls - ugly, but there's no other registry for hooks
-        $scOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'];
+        $scOptions = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] ?? [];
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'] = new DummyFirstLevelArrayObject(
             $scOptions
         );
