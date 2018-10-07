@@ -201,7 +201,7 @@
 
 	<!-- END PSR-2 -->
 
-	<!-- TYPO3 start -->
+	<!-- TYPO3 start - commented for codacy compat
 	<rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
 	<rule ref="SlevomatCodingStandard.ControlStructures.DisallowYodaComparison"/>
@@ -227,6 +227,7 @@
 			<property name="linesCountBeforeClosingBrace" type="int" value="0"/>
 		</properties>
 	</rule>
+	-->
 	<rule ref="Generic.ControlStructures.InlineControlStructure"/>
 	<rule ref="Generic.Formatting.SpaceAfterCast"/>
 	<rule ref="Generic.Functions.CallTimePassByReference"/>
