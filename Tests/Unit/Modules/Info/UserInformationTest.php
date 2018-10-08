@@ -5,6 +5,7 @@ namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules\Info;
 
 use Psychomieze\AdminpanelExtended\Modules\Info\UserInformation;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -48,5 +49,18 @@ class UserInformationTest extends UnitTestCase
         $this->subject->getLabel();
 
         $languageServiceProphecy->sL($labelIdentifier)->shouldHaveBeenCalledTimes(1);
+    }
+
+    /**
+     * @test
+     */
+    public function resourceProviderMethodsShouldProvideAdditonalCssResources(): void
+    {
+        $expectedJSResources = [];
+        $expectedCSSResources = ['EXT:adminpanel_extended/Resources/Public/Css/Messages.css'];
+
+        static::assertInstanceOf(ResourceProviderInterface::class, $this->subject);
+        static::assertSame($expectedJSResources, $this->subject->getJavaScriptFiles());
+        static::assertSame($expectedCSSResources, $this->subject->getCssFiles());
     }
 }
