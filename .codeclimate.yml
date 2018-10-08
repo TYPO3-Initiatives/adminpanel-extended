@@ -26,10 +26,10 @@ checks:
             threshold: 4
     similar-code:
         config:
-            threshold: 4
+            threshold: 15
     identical-code:
         config:
-            threshold: 4
+            threshold: 15
     plugins:
         editorconfig:
             enabled: true

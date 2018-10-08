@@ -27,7 +27,7 @@ script:
 - >
   echo;
   echo "Unit tests";
-  .Build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml --coverage-clover .Build/coverage.xml
+  .Build/vendor/phpunit/phpunit/phpunit -c Build/phpunit.xml --coverage-clover .Build/clover.xml
 
 - >
   echo;
@@ -35,8 +35,9 @@ script:
   find . -name \*.php ! -path "./.Build/*" | parallel --gnu php -d display_errors=stderr -l {} > /dev/null \;
 
 after_script:
-- .Build/bin/codacycoverage clover .Build/coverage.xml
-- ./cc-test-reporter after-build -t clover -p .Build/ -d --exit-code $TRAVIS_TEST_RESULT
+- .Build/bin/codacycoverage clover .Build/clover.xml
+- ./cc-test-reporter format-coverage -t clover .Build/clover.xml
+- ./cc-test-reporter upload-coverage
 
 cache:
   directories:
