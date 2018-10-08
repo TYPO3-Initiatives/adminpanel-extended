@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules\HooksAndSignals;
 
-use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\LoggedArray;

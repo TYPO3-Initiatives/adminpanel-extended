@@ -7,7 +7,6 @@ use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\DummyFirstLevelArrayObject;
 use Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\LoggedArray;
-use TYPO3\CMS\Core\Log\LogLevel;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
