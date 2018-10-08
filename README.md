@@ -1,6 +1,6 @@
 # Adminpanel Extended
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1374a9be711846e2b89f9900061d0523)](https://www.codacy.com/app/susanne.moog/adminpanel-extended?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=TYPO3-Initiatives/adminpanel-extended&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1374a9be711846e2b89f9900061d0523)](https://www.codacy.com/app/susanne.moog/adminpanel-extended?utm_source=github.com&utm_medium=referral&utm_content=TYPO3-Initiatives/adminpanel-extended&utm_campaign=Badge_Grade)
 [![Build Status](https://travis-ci.com/TYPO3-Initiatives/adminpanel-extended.svg?branch=develop)](https://travis-ci.com/TYPO3-Initiatives/adminpanel-extended)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/TYPO3-Initiatives/adminpanel-extended.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/TYPO3-Initiatives/adminpanel-extended/context:javascript)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f1253d33fc32156f4cf5/maintainability)](https://codeclimate.com/github/TYPO3-Initiatives/adminpanel-extended/maintainability)
@@ -23,3 +23,4 @@ Development for this extension is happening as part of the adminpanel initiative
 ## Issues / Repository
 
 Report issues and find the code at <https://github.com/TYPO3-Initiatives/adminpanel-extended>
+
