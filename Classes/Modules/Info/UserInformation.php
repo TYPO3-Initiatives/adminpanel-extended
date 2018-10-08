@@ -131,6 +131,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
     /**
      * Returns true if someone else is editing the current page. Otherwise returns false.
      *
+     * @codeCoverageIgnore
      * @return bool
      */
     protected function isPageLocked(): bool

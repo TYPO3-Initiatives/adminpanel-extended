@@ -4,13 +4,18 @@ declare(strict_types=1);
 namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules\Info;
 
 use Prophecy\Argument;
+use Psr\Http\Message\ServerRequestInterface;
+use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
 use Psychomieze\AdminpanelExtended\Modules\Info\UserInformation;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
+use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
+use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -20,15 +25,16 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 class UserInformationTest extends UnitTestCase
 {
     /**
-     * @var \Psychomieze\AdminpanelExtended\Modules\Info\UserInformation
+     * @var \Psychomieze\AdminpanelExtended\Modules\Info\UserInformation|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->resetSingletonInstances = true;
 
-        $this->subject = new UserInformation();
+        $this->subject = $this->createPartialMock(UserInformation::class, ['isPageLocked']);
     }
 
     /**
@@ -74,9 +80,6 @@ class UserInformationTest extends UnitTestCase
      */
     public function getContentShouldUsePassedModuleDataAndForwardTheseDataToTheView(): void
     {
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] = 'ddmmyy';
-        $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] = 'hhmm';
-
         $viewProphecy = $this->prophesize(StandaloneView::class);
         $viewProphecy->setTemplatePathAndFilename(Argument::any())->shouldBeCalled();
         $viewProphecy->assignMultiple($this->getModuleDataFixture()->getArrayCopy())->shouldBeCalled();
@@ -86,6 +89,40 @@ class UserInformationTest extends UnitTestCase
         $this->subject->getContent($this->getModuleDataFixture());
 
         static::assertInstanceOf(ContentProviderInterface::class, $this->subject);
+    }
+
+    /**
+     * @test
+     */
+    public function getDataToStoreShouldFetchModuleSpecificData(): void
+    {
+        $requestProphecy = $this->prophesize(ServerRequestInterface::class);
+
+        $this->subject
+            ->expects(static::once())
+            ->method('isPageLocked')
+            ->willReturn(true);
+
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
+
+        $frontendUserSessionRepositoryProphecy = $this->prophesize(FrontendUserSessionRepository::class);
+        $frontendUserSessionRepositoryProphecy->findAllActive()->willReturn([1, 2, 3, 4]);
+        $objectManagerProphecy->get(FrontendUserSessionRepository::class)
+            ->willReturn($frontendUserSessionRepositoryProphecy->reveal());
+
+        $backendUserSessionRepositoryProphecy = $this->prophesize(BackendUserSessionRepository::class);
+        $backendUserSessionRepositoryProphecy->findAllActive()->willReturn([5, 6, 7, 8, 9]);
+        $objectManagerProphecy->get(BackendUserSessionRepository::class)
+            ->willReturn($backendUserSessionRepositoryProphecy->reveal());
+
+        $actual = $this->subject->getDataToStore($requestProphecy->reveal());
+
+        static::assertEquals(
+            $this->getModuleDataFixture(true, 4, 5),
+            $actual
+        );
+        static::assertInstanceOf(DataProviderInterface::class, $this->subject);
     }
 
     /**
@@ -101,7 +138,7 @@ class UserInformationTest extends UnitTestCase
     ): ModuleData {
         return new ModuleData([
             'isPageBeingEdited' => $isPageBeingEdited,
-            'dataFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
             'onlineFrontendUsers' => $onlineFrontendUsers,
             'onlineBackendUsers' => $onlineBackendUsers,
