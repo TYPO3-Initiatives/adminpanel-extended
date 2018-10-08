@@ -30,9 +30,19 @@ class DummyFirstLevelArrayObjectTest extends UnitTestCase
     /**
      * @test
      */
-    public function offsetExistsAlwaysReturnsTrue(): void
+    public function offsetExistsReturnsParentOffsetExists(): void
     {
         $dummyFirstLevelArrayObject = new DummyFirstLevelArrayObject([]);
+        $result = $dummyFirstLevelArrayObject->offsetExists('foo');
+        self::assertFalse($result);
+    }
+
+    /**
+     * @test
+     */
+    public function offsetExistsAlwaysReturnsTrueIfArrayHasSubLevels(): void
+    {
+        $dummyFirstLevelArrayObject = new DummyFirstLevelArrayObject(['foo' => ['bar' => 'baz']]);
         $result = $dummyFirstLevelArrayObject->offsetExists('foo');
         self::assertTrue($result);
     }
