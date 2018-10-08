@@ -18,6 +18,11 @@ install:
 - git checkout composer.json
 - export TYPO3_PATH_WEB="$PWD/.Build/web"
 
+before_script:
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter
+- ./cc-test-reporter before-build
+
 script:
 - >
   echo;
@@ -31,6 +36,7 @@ script:
 
 after_script:
 - .Build/bin/codacycoverage clover .Build/coverage.xml
+- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
 
 cache:
   directories:
