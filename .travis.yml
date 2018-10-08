@@ -36,7 +36,7 @@ script:
 
 after_script:
 - .Build/bin/codacycoverage clover .Build/coverage.xml
-- ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
+- ./cc-test-reporter after-build -t clover -p .Build/ -d --exit-code $TRAVIS_TEST_RESULT
 
 cache:
   directories:

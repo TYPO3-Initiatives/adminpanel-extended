@@ -1,0 +1,54 @@
+version: "2"
+checks:
+    argument-count:
+        config:
+            threshold: 4
+    complex-logic:
+        config:
+            threshold: 4
+    file-lines:
+        config:
+            threshold: 250
+    method-complexity:
+        config:
+            threshold: 5
+    method-count:
+        config:
+            threshold: 20
+    method-lines:
+        config:
+            threshold: 25
+    nested-control-flow:
+        config:
+            threshold: 4
+    return-statements:
+        config:
+            threshold: 4
+    similar-code:
+        config:
+            threshold: 4
+    identical-code:
+        config:
+            threshold: 4
+    plugins:
+        editorconfig:
+            enabled: true
+            channel: beta
+            config:
+                editorconfig: .editorconfig
+        phan:
+            enabled: true
+            config:
+                file_extensions: "php"
+                ignore-undeclared: true
+        markdownlint:
+            enabled: true
+        phpmd:
+            enabled: true
+            config:
+                file_extensions:
+                - php
+                - inc
+            checks:
+                CleanCode/StaticAccess:
+                    enabled: false
