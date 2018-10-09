@@ -29,20 +29,19 @@ class SignalsAjaxController
         }
         $moduleData = $data->offsetGet($module);
         $logRecord = $moduleData['signals'][$signalId] ?? null;
+        $signalData = [];
+        $statusCode = 404;
         if($logRecord instanceof LogRecord) {
             $responseData = $logRecord->getData();
             $signalArguments = $responseData['signalArguments'];
             foreach ($signalArguments as $key => $datum) {
-                if (is_object($datum)) {
-                    $signalArguments[$key] = get_class($datum);
+                if (\is_object($datum)) {
+                    $signalArguments[$key] = \get_class($datum);
                 }
             }
             $signalData['data'] = $signalArguments;
             $signalData['signalId'] = $signalId;
             $statusCode = 200;
-        } else {
-            $signalData = [];
-            $statusCode = 404;
         }
         return new JsonResponse($signalData, $statusCode);
     }

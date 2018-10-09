@@ -52,3 +52,5 @@ plugins:
         checks:
             CleanCode/StaticAccess:
                 enabled: false
+            Controversial/Superglobals:
+                enabled: false
