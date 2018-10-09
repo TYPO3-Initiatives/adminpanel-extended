@@ -23,6 +23,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
      * Sub-Module content as rendered HTML
      *
      * @return string
+     * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
     public function getContent(ModuleData $moduleData): string
     {
