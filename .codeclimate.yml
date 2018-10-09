@@ -30,7 +30,7 @@ checks:
     identical-code:
         config:
             threshold: 45
-    plugins:
+    engines:
         editorconfig:
             enabled: true
             channel: beta
