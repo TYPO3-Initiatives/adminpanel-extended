@@ -46,5 +46,4 @@ class SignalsAjaxController
         }
         return new JsonResponse($signalData, $statusCode);
     }
-
 }

@@ -239,5 +239,4 @@
 	<rule ref="Squiz.ControlStructures.LowercaseDeclaration"/>
 	<rule ref="Squiz.PHP.LowercasePHPFunctions"/>
 	<rule ref="Squiz.Scope.MemberVarScope"/>
-
 </ruleset>
