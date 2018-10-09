@@ -30,25 +30,25 @@ checks:
     identical-code:
         config:
             threshold: 45
-    engines:
-        editorconfig:
-            enabled: true
-            channel: beta
-            config:
-                editorconfig: .editorconfig
-        phan:
-            enabled: true
-            config:
-                file_extensions: "php"
-                ignore-undeclared: true
-        markdownlint:
-            enabled: true
-        phpmd:
-            enabled: true
-            config:
-                file_extensions:
-                - php
-                - inc
-            checks:
-                CleanCode/StaticAccess:
-                    enabled: false
+plugins:
+    editorconfig:
+        enabled: true
+        channel: beta
+        config:
+            editorconfig: .editorconfig
+    phan:
+        enabled: true
+        config:
+            file_extensions: "php"
+            ignore-undeclared: true
+    markdownlint:
+        enabled: true
+    phpmd:
+        enabled: true
+        config:
+            file_extensions:
+            - php
+            - inc
+        checks:
+            CleanCode/StaticAccess:
+                enabled: false
