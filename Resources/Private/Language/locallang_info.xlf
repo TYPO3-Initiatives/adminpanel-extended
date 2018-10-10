@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0" xmlns:t3="http://typo3.org/schemas/xliff">
+	<file t3:id="1538664860" source-language="en" datatype="plaintext" original="messages" date="2018-04-10T16:54:34Z"
+		  product-name="adminpanel-extended">
+		<header/>
+		<body>
+			<trans-unit id="submodule.userinformation.label">
+				<source>Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineBackendUsers">
+				<source>Online Backend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineFrontendUsers">
+				<source>Online Frontend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.onlineFrontendUsers">
+				<source>Online Frontend Users</source>
+			</trans-unit>
+			<trans-unit id="submodule.userinformation.isLockedPage">
+				<source>Someone is currently editing this page.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

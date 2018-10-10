@@ -54,3 +54,5 @@ plugins:
                 enabled: false
             Controversial/Superglobals:
                 enabled: false
+            Naming/LongVariable:
+                enabled: false

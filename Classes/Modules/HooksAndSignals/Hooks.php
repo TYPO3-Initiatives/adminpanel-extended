@@ -27,7 +27,7 @@ class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderIn
     public function getContent(ModuleData $moduleData): string
     {
         $view = GeneralUtility::makeInstance(StandaloneView::class);
-        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Hooks.html';
+        $templateNameAndPath = 'EXT:adminpanel_extended/Resources/Private/Templates/Debug/Hooks.html';
         $view->setTemplatePathAndFilename(GeneralUtility::getFileAbsFileName($templateNameAndPath));
 
         $view->assign('entries', $moduleData['hooks']);
