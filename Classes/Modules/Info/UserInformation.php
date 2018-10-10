@@ -109,10 +109,10 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     protected function findAllActiveFrontendUsers(): int
     {
-        $frontendUserSessionReposiotry = GeneralUtility::makeInstance(ObjectManager::class)
+        $frontendUserSessionRepository = GeneralUtility::makeInstance(ObjectManager::class)
             ->get(FrontendUserSessionRepository::class);
 
-        return \count($frontendUserSessionReposiotry->findAllActive());
+        return \count($frontendUserSessionRepository->findAllActive());
     }
 
     /**
