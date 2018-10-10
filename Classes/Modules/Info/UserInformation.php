@@ -3,6 +3,13 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Modules\Info;
 
+/*
+ * This file is part of the TYPO3 Adminpanel Initiative.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 use Psr\Http\Message\ServerRequestInterface;
 use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;

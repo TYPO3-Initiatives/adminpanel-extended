@@ -3,6 +3,13 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Domain\Repository;
 
+/*
+ * This file is part of the TYPO3 Adminpanel Initiative.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
