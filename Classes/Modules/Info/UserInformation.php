@@ -24,7 +24,8 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Class UserInformation
  */
-class UserInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ResourceProviderInterface
+class UserInformation extends AbstractSubModule
+    implements DataProviderInterface, ContentProviderInterface, ResourceProviderInterface
 {
 
     private $frontendUserSessionRepository;
@@ -33,10 +34,22 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     private $backendUserSessionRepository;
 
-    public function __construct(UserSessionRepository $frontendUserSessionRepository = null, UserSessionRepository $backendUserSessionRepository = null)
-    {
-        $this->frontendUserSessionRepository = $frontendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_FE);
-        $this->backendUserSessionRepository = $backendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_BE);
+    public function __construct(
+        UserSessionRepository $frontendUserSessionRepository = null,
+        UserSessionRepository $backendUserSessionRepository = null
+    ) {
+        $this->frontendUserSessionRepository = $frontendUserSessionRepository
+                                               ??
+                                               GeneralUtility::makeInstance(
+                                                   UserSessionRepository::class,
+                                                   UserSessionRepository::CONTEXT_FE
+                                               );
+        $this->backendUserSessionRepository = $backendUserSessionRepository
+                                              ??
+                                              GeneralUtility::makeInstance(
+                                                  UserSessionRepository::class,
+                                                  UserSessionRepository::CONTEXT_BE
+                                              );
     }
 
     /**
@@ -87,13 +100,15 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        return new ModuleData([
-            'isPageBeingEdited' => $this->isPageLocked(),
-            'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
-            'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
-            'onlineFrontendUsers' => $this->findAllActiveFrontendUsers(),
-            'onlineBackendUsers' => $this->findAllActiveBackendUsers()
-        ]);
+        return new ModuleData(
+            [
+                'isPageBeingEdited' => $this->isPageLocked(),
+                'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
+                'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
+                'onlineFrontendUsers' => $this->findAllActiveFrontendUsers(),
+                'onlineBackendUsers' => $this->findAllActiveBackendUsers(),
+            ]
+        );
     }
 
     /**
@@ -116,7 +131,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
     public function getCssFiles(): array
     {
         return [
-            'EXT:adminpanel_extended/Resources/Public/Css/Messages.css'
+            'EXT:adminpanel_extended/Resources/Public/Css/Messages.css',
         ];
     }
 
@@ -137,7 +152,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     protected function findAllActiveBackendUsers(): int
     {
-           return \count($this->backendUserSessionRepository->findAllActive());
+        return \count($this->backendUserSessionRepository->findAllActive());
     }
 
     /**
