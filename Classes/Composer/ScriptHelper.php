@@ -10,6 +10,11 @@ namespace Psychomieze\AdminpanelExtended\Composer;
  * LICENSE file that was distributed with this source code.
  */
 
+/**
+ * Class ScriptHelper
+ *
+ * @codeCoverageIgnore Build Helper
+ */
 final class ScriptHelper
 {
     private const EXTENSION_DIRECTORY = __DIR__ . '/../../.Build/web/typo3conf/ext';

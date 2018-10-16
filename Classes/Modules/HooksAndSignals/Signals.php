@@ -18,6 +18,7 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -28,6 +29,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
     /**
      * Sub-Module content as rendered HTML
      *
+     * @codeCoverageIgnore FE Rendering
      * @return string
      * @throws \TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException
      */
@@ -111,6 +113,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
      * Returns a string array with javascript files that will be rendered after the module
      * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
      *
+     * @codeCoverageIgnore Configuration
      * @return array
      */
     public function getJavaScriptFiles(): array
@@ -124,6 +127,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
      * Returns a string array with css files that will be rendered after the module
      * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
      *
+     * @codeCoverageIgnore Configuration
      * @return array
      */
     public function getCssFiles(): array
@@ -131,7 +135,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
         return [];
     }
 
-    protected function getLanguageService()
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
