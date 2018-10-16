@@ -21,11 +21,7 @@ class ModuleDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @param string $moduleClass Class name of module to get data for
-     * @param string $requestId
-     * @return null|\TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
-     */
+
     private $cacheManager;
 
     private const NO_SUCH_CACHE = 'Configuration error: The adminpanel is activated but the adminpanel_requestcache was not found.';
@@ -35,6 +31,11 @@ class ModuleDataService implements LoggerAwareInterface
         $this->cacheManager = $cacheManager ?? GeneralUtility::makeInstance(CacheManager::class);
     }
 
+    /**
+     * @param string $moduleClass Class name of module to get data for
+     * @param string $requestId
+     * @return null|\TYPO3\CMS\Adminpanel\ModuleApi\ModuleData
+     */
     public function getModuleDataByRequestId(string $moduleClass, string $requestId): ?ModuleData
     {
         $moduleData = null;
