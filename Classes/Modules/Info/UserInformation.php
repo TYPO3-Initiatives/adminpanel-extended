@@ -11,16 +11,14 @@ namespace Psychomieze\AdminpanelExtended\Modules\Info;
  */
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
+use Psychomieze\AdminpanelExtended\Domain\Repository\UserSessionRepository;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
@@ -28,6 +26,19 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
  */
 class UserInformation extends AbstractSubModule implements DataProviderInterface, ContentProviderInterface, ResourceProviderInterface
 {
+
+    private $frontendUserSessionRepository;
+    /**
+     * @var \Psychomieze\AdminpanelExtended\Domain\Repository\UserSessionRepository
+     */
+    private $backendUserSessionRepository;
+
+    public function __construct(UserSessionRepository $frontendUserSessionRepository = null, UserSessionRepository $backendUserSessionRepository = null)
+    {
+        $this->frontendUserSessionRepository = $frontendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_FE);
+        $this->backendUserSessionRepository = $backendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_BE);
+    }
+
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
@@ -116,10 +127,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     protected function findAllActiveFrontendUsers(): int
     {
-        $frontendUserSessionRepository = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(FrontendUserSessionRepository::class);
-
-        return \count($frontendUserSessionRepository->findAllActive());
+        return \count($this->frontendUserSessionRepository->findAllActive());
     }
 
     /**
@@ -129,10 +137,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     protected function findAllActiveBackendUsers(): int
     {
-        $backendUserSessionRepository = GeneralUtility::makeInstance(ObjectManager::class)
-            ->get(BackendUserSessionRepository::class);
-
-        return \count($backendUserSessionRepository->findAllActive());
+           return \count($this->backendUserSessionRepository->findAllActive());
     }
 
     /**

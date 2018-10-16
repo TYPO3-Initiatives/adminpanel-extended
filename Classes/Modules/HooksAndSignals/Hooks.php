@@ -28,6 +28,7 @@ class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderIn
      * Sub-Module content as rendered HTML
      *
      * @param \TYPO3\CMS\Adminpanel\ModuleApi\ModuleData $moduleData
+     * @codeCoverageIgnore FE Rendering
      * @return string
      */
     public function getContent(ModuleData $moduleData): string
@@ -97,7 +98,7 @@ class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderIn
         );
     }
 
-    protected function getLanguageService()
+    protected function getLanguageService(): \TYPO3\CMS\Core\Localization\LanguageService
     {
         return $GLOBALS['LANG'];
     }

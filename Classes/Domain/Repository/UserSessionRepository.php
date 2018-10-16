@@ -10,16 +10,26 @@ namespace Psychomieze\AdminpanelExtended\Domain\Repository;
  * LICENSE file that was distributed with this source code.
  */
 
-use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Domain\Repository\FrontendUserRepository;
 
 /**
  * Class FrontendUserSessionRepository
  */
-class FrontendUserSessionRepository extends FrontendUserRepository
+class UserSessionRepository
 {
+
+    private $sessionBackend;
+
+    public const CONTEXT_FE = 'FE';
+    public const CONTEXT_BE = 'BE';
+
+    public function __construct($context, SessionManager $sessionManager = null)
+    {
+        $sessionManager = $sessionManager ?? GeneralUtility::makeInstance(SessionManager::class);
+        $this->sessionBackend = $sessionManager->getSessionBackend($context);
+    }
+
     /**
      * Find all active sessions for all frontend users.
      *
@@ -27,8 +37,7 @@ class FrontendUserSessionRepository extends FrontendUserRepository
      */
     public function findAllActive(): array
     {
-        $sessionBackend = $this->getSessionBackend();
-        $allSessions = $sessionBackend->getAll();
+        $allSessions = $this->sessionBackend->getAll();
 
         // Map array to correct keys
         $allSessions = array_map(
@@ -44,19 +53,13 @@ class FrontendUserSessionRepository extends FrontendUserRepository
         );
 
         // Sort by timestamp
-        usort($allSessions, function ($session1, $session2) {
-            return $session1['timestamp'] <=> $session2['timestamp'];
-        });
-
+        usort(
+            $allSessions,
+            function ($session1, $session2) {
+                return $session1['timestamp'] <=> $session2['timestamp'];
+            }
+        );
         return $allSessions;
     }
 
-    /**
-     * @return \TYPO3\CMS\Core\Session\Backend\SessionBackendInterface
-     */
-    protected function getSessionBackend(): SessionBackendInterface
-    {
-        return GeneralUtility::makeInstance(SessionManager::class)
-            ->getSessionBackend('FE');
-    }
 }

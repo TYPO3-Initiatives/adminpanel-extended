@@ -12,7 +12,7 @@ namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules\Info;
 
 use Prophecy\Argument;
 use Psr\Http\Message\ServerRequestInterface;
-use Psychomieze\AdminpanelExtended\Domain\Repository\FrontendUserSessionRepository;
+use Psychomieze\AdminpanelExtended\Domain\Repository\UserSessionRepository;
 use Psychomieze\AdminpanelExtended\Modules\Info\UserInformation;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
@@ -105,6 +105,20 @@ class UserInformationTest extends UnitTestCase
     {
         $requestProphecy = $this->prophesize(ServerRequestInterface::class);
 
+        $frontendUserSessionRepositoryProphecy = $this->prophesize(UserSessionRepository::class);
+        $frontendUserSessionRepositoryProphecy->findAllActive()->willReturn([1, 2, 3, 4]);
+
+        $backendUserSessionRepositoryProphecy = $this->prophesize(UserSessionRepository::class);
+        $backendUserSessionRepositoryProphecy->findAllActive()->willReturn([5, 6, 7, 8, 9]);
+
+        $this->subject = $this->getMockBuilder(UserInformation::class)
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(['isPageLocked'])
+            ->setConstructorArgs([$frontendUserSessionRepositoryProphecy->reveal(), $backendUserSessionRepositoryProphecy->reveal()])
+            ->getMock();
+
         $this->subject
             ->expects(static::once())
             ->method('isPageLocked')
@@ -113,15 +127,6 @@ class UserInformationTest extends UnitTestCase
         $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         GeneralUtility::setSingletonInstance(ObjectManager::class, $objectManagerProphecy->reveal());
 
-        $frontendUserSessionRepositoryProphecy = $this->prophesize(FrontendUserSessionRepository::class);
-        $frontendUserSessionRepositoryProphecy->findAllActive()->willReturn([1, 2, 3, 4]);
-        $objectManagerProphecy->get(FrontendUserSessionRepository::class)
-            ->willReturn($frontendUserSessionRepositoryProphecy->reveal());
-
-        $backendUserSessionRepositoryProphecy = $this->prophesize(BackendUserSessionRepository::class);
-        $backendUserSessionRepositoryProphecy->findAllActive()->willReturn([5, 6, 7, 8, 9]);
-        $objectManagerProphecy->get(BackendUserSessionRepository::class)
-            ->willReturn($backendUserSessionRepositoryProphecy->reveal());
 
         $actual = $this->subject->getDataToStore($requestProphecy->reveal());
 
