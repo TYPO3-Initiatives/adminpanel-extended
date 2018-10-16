@@ -18,8 +18,6 @@ use Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\Signals;
 use Psychomieze\AdminpanelExtended\Service\ModuleDataService;
 use Psychomieze\AdminpanelExtended\Service\SignalsService;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Exception\NoSuchCacheException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -28,19 +26,32 @@ class SignalsAjaxController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
+    /**
+     * @var \Psychomieze\AdminpanelExtended\Service\SignalsService
+     */
+    private $signalsService;
+
+    private $moduleDataService;
+
+    public function __construct(SignalsService $signalsService = null, ModuleDataService $moduleDataService = null)
+    {
+        $this->signalsService = $signalsService ?? GeneralUtility::makeInstance(SignalsService::class);
+        $this->moduleDataService = $moduleDataService ?? GeneralUtility::makeInstance(ModuleDataService::class);
+    }
+
     public function getData(ServerRequestInterface $request): ResponseInterface
     {
         $queryParams = $request->getQueryParams();
-        $signalId = $queryParams['signalId'];
-        $requestId = $queryParams['requestId'];
+        $signalId = (string)($queryParams['signalId'] ?? '');
+        $requestId = (string)($queryParams['requestId'] ?? '');
         $this->validateParameters($signalId, $requestId);
-        $moduleData = GeneralUtility::makeInstance(ModuleDataService::class)->getModuleDataByRequestId($requestId);
+        $moduleData = $this->moduleDataService->getModuleDataByRequestId(Signals::class, $requestId);
         $signalData = [];
         $statusCode = 404;
         if ($moduleData instanceof ModuleData) {
             $logRecord = $moduleData['signals'][$signalId] ?? null;
             if ($logRecord instanceof LogRecord) {
-                $signalData['data'] = GeneralUtility::makeInstance(SignalsService::class)->getSignalDataFromLogRecord(
+                $signalData['data'] = $this->signalsService->getSignalDataFromLogRecord(
                     $logRecord
                 );
                 $signalData['signalId'] = $signalId;
