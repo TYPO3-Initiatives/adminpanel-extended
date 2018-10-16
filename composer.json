@@ -5,8 +5,10 @@
   "description": "TYPO3 AdminPanel Extended",
   "homepage": "https://typo3.org",
   "require": {
+    "ext-json": "*",
     "typo3/cms-adminpanel": "9.5.*@dev",
     "psr/http-message": "~1.0",
+    "psr/log": "~1.0",
     "typo3/cms-recordlist": "9.5.*@dev",
     "typo3/cms-core": "9.5.*@dev",
     "typo3/cms-extensionmanager": "9.5.*@dev",
