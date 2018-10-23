@@ -21,15 +21,22 @@ call_user_func(
             );
         }
 
-        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info']) &&
-            \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('beuser')) {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info'])) {
+            $infoSubModules = [
+                'internal-content-objects' => [
+                    'module' => Psychomieze\AdminpanelExtended\Modules\Info\InternalContentObjects::class
+                ]
+            ];
+
+            if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('beuser')) {
+                $infoSubModules['userinformation'] = [
+                    'module' => Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class
+                ];
+            }
+
             $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info']['submodules'] = array_replace_recursive(
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info']['submodules'],
-                [
-                    'userinformation' => [
-                        'module' => Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class
-                    ]
-                ]
+                $infoSubModules
             );
         }
     }
