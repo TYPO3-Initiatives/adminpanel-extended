@@ -33,10 +33,14 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     private $backendUserSessionRepository;
 
-    public function __construct(UserSessionRepository $frontendUserSessionRepository = null, UserSessionRepository $backendUserSessionRepository = null)
-    {
-        $this->frontendUserSessionRepository = $frontendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_FE);
-        $this->backendUserSessionRepository = $backendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class, UserSessionRepository::CONTEXT_BE);
+    public function __construct(
+        UserSessionRepository $frontendUserSessionRepository = null,
+        UserSessionRepository $backendUserSessionRepository = null
+    ) {
+        $this->frontendUserSessionRepository = $frontendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class,
+                UserSessionRepository::CONTEXT_FE);
+        $this->backendUserSessionRepository = $backendUserSessionRepository ?? GeneralUtility::makeInstance(UserSessionRepository::class,
+                UserSessionRepository::CONTEXT_BE);
     }
 
     /**

@@ -14,7 +14,7 @@ use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Class FrontendUserSessionRepository
+ * Class UserSessionRepository
  */
 class UserSessionRepository
 {

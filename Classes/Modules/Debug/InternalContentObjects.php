@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psychomieze\AdminpanelExtended\Modules\Info;
+namespace Psychomieze\AdminpanelExtended\Modules\Debug;
 
 /*
  * This file is part of the TYPO3 Adminpanel Initiative.
@@ -37,7 +37,9 @@ class InternalContentObjects extends AbstractSubModule implements ContentProvide
      */
     public function getLabel(): string
     {
-        return 'Internal Content Objects';
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_debug.xlf:submodule.internalContentObjects.label'
+        );
     }
 
     /**
