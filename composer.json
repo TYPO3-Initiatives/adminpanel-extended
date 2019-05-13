@@ -1,31 +1,30 @@
 {
   "name": "psychomieze/adminpanel-extended",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "type": "typo3-cms-extension",
   "description": "TYPO3 AdminPanel Extended",
   "homepage": "https://typo3.org",
   "require": {
     "ext-json": "*",
-    "typo3/cms-adminpanel": "9.5.*@dev",
     "psr/http-message": "~1.0",
     "psr/log": "~1.0",
-    "typo3/cms-recordlist": "9.5.*@dev",
-    "typo3/cms-core": "9.5.*@dev",
+    "typo3/cms-adminpanel": "9.5.*@dev",
     "typo3/cms-backend": "9.5.*@dev",
+    "typo3/cms-beuser": "9.5.*@dev",
+    "typo3/cms-core": "9.5.*@dev",
     "typo3/cms-extensionmanager": "9.5.*@dev",
-    "typo3fluid/fluid": "^2.5.2",
     "typo3/cms-fluid": "9.5.*@dev",
-    "typo3/cms-beuser": "9.5.*@dev"
+    "typo3fluid/fluid": "^2.5.2"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
-    "typo3/cms-install": "9.5.*@dev",
-    "slevomat/coding-standard": "^4.8",
     "codacy/coverage": "^1.4",
+    "roave/security-advisories": "dev-master",
+    "slevomat/coding-standard": "^4.8",
+    "typo3/cms-install": "9.5.*@dev",
     "typo3/testing-framework": "^4.9"
   },
   "replace": {
-    "adminpanel_extended": "self.version"
+    "psychomieze/adminpanel_extended": "self.version"
   },
   "autoload": {
     "psr-4": {
@@ -39,7 +38,8 @@
   },
   "config": {
     "vendor-dir": ".Build/vendor",
-    "bin-dir": ".Build/bin"
+    "bin-dir": ".Build/bin",
+    "sort-packages": true
   },
   "extra": {
     "typo3/cms": {
