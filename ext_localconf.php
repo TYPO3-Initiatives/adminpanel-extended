@@ -9,14 +9,16 @@ call_user_func(
                 [
                     'hooks' => [
                         'module' => \Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\Hooks::class,
-                        'after' => [
-                            'log',
-                        ],
+                        'after' => ['log']
                     ],
                     'signals' => [
                         'module' => \Psychomieze\AdminpanelExtended\Modules\HooksAndSignals\Signals::class,
-                        'after' => ['hooks'],
+                        'after' => ['hooks']
                     ],
+                    'internal-content-objects' => [
+                        'module' => Psychomieze\AdminpanelExtended\Modules\Debug\InternalContentObjects::class,
+                        'after' => ['signals']
+                    ]
                 ]
             );
         }
@@ -27,7 +29,8 @@ call_user_func(
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info']['submodules'],
                 [
                     'userinformation' => [
-                        'module' => Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class
+                        'module' => Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class,
+                        'after' => ['request']
                     ]
                 ]
             );

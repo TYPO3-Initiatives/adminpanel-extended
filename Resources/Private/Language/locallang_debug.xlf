@@ -28,6 +28,9 @@
 			<trans-unit id="submodule.hooks.label">
 				<source>Hooks</source>
 			</trans-unit>
+			<trans-unit id="submodule.internalContentObjects.label">
+				<source>Internal Content Objects</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
