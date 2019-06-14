@@ -32,5 +32,10 @@ call_user_func(
                 ]
             );
         }
+
+        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['psychomieze_rendering'] = [
+            'module' => \Psychomieze\AdminpanelExtended\Modules\Rendering::class,
+            'after' => ['debug']
+        ];
     }
 );
