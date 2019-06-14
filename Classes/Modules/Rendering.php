@@ -27,7 +27,9 @@ class Rendering extends AbstractModule implements ShortInfoProviderInterface
      */
     public function getLabel(): string
     {
-        return 'rendering';
+        return $this->getLanguageService()->sL(
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_rendering.xlf:module.rendering.label'
+        );
     }
 
     /**
@@ -47,6 +49,6 @@ class Rendering extends AbstractModule implements ShortInfoProviderInterface
      */
     public function getIconIdentifier(): string
     {
-        return 'broken';
+        return 'actions-document';
     }
 }
