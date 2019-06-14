@@ -21,7 +21,6 @@ class ModuleDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-
     private $cacheManager;
 
     private const NO_SUCH_CACHE = 'Configuration error: The adminpanel is activated but the adminpanel_requestcache was not found.';
@@ -54,7 +53,6 @@ class ModuleDataService implements LoggerAwareInterface
         }
         return $moduleData instanceof ModuleData ? $moduleData : null;
     }
-
 
     /**
      * @param string $requestId
