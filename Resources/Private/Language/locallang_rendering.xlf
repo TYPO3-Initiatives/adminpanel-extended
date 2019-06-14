@@ -7,6 +7,9 @@
             <trans-unit id="module.rendering.label">
                 <source>Rendering</source>
             </trans-unit>
+            <trans-unit id="submodule.fluid.label">
+                <source>Fluid</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
