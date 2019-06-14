@@ -66,7 +66,7 @@ class Signals implements ModuleInterface, ContentProviderInterface, DataProvider
      */
     public function getIdentifier(): string
     {
-        return 'debug_signals';
+        return 'psychomieze_debug_signals';
     }
 
     /**

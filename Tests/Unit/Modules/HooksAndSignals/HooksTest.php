@@ -36,7 +36,7 @@ class HooksTest extends UnitTestCase
     public function getIdentifierReturnsIdentifier(): void
     {
         $identifier = $this->hooks->getIdentifier();
-        self::assertSame('debug_hooks', $identifier);
+        self::assertSame('psychomieze_debug_hooks', $identifier);
     }
 
     /**

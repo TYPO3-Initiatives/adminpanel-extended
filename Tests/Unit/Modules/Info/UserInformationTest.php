@@ -49,7 +49,7 @@ class UserInformationTest extends UnitTestCase
      */
     public function getIdentifierReturnsStaticModuleIdentifier(): void
     {
-        static::assertSame('info_userinformation', $this->subject->getIdentifier());
+        static::assertSame('psychomieze_info_userinformation', $this->subject->getIdentifier());
 
         static::assertInstanceOf(AbstractSubModule::class, $this->subject);
     }

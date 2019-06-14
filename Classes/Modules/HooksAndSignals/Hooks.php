@@ -49,7 +49,7 @@ class Hooks implements ModuleInterface, ContentProviderInterface, DataProviderIn
      */
     public function getIdentifier(): string
     {
-        return 'debug_hooks';
+        return 'psychomieze_debug_hooks';
     }
 
     /**

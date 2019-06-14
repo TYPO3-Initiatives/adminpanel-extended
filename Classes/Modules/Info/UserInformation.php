@@ -47,7 +47,7 @@ class UserInformation extends AbstractSubModule implements DataProviderInterface
      */
     public function getIdentifier(): string
     {
-        return 'info_userinformation';
+        return 'psychomieze_info_userinformation';
     }
 
     /**

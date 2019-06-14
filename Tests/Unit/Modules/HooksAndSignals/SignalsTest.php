@@ -40,7 +40,7 @@ class SignalsTest extends UnitTestCase
     public function getIdentifierReturnsIdentifier(): void
     {
         $identifier = $this->signals->getIdentifier();
-        self::assertSame('debug_signals', $identifier);
+        self::assertSame('psychomieze_debug_signals', $identifier);
     }
 
     /**
