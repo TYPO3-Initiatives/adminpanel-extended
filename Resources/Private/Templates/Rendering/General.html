@@ -23,9 +23,26 @@
         </div>
     </f:for>
 </f:if>
-<f:comment>
-    <f:if condition="{preProcessors}">
 
-    </f:if>
-</f:comment>
+<f:if condition="{preProcessors}">
+    <h2 class="typo3-adminPanel-headline">Fluid pre processors</h2>
+    <div class="typo3-adminPanel-table-overflow">
+        <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+            <thead>
+            <tr>
+                <th scope="col" class="typo3-adminPanel-table-cell-key">Prio</th>
+                <th scope="col">Processor</th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{preProcessors}" key="priority" as="processor">
+                <tr>
+                    <th scope="row" class="typo3-adminPanel-table-cell-key">{priority}</th>
+                    <td>{processor}</td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </div>
+</f:if>
 </html>
