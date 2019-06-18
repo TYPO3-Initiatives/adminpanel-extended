@@ -27,7 +27,7 @@ call_user_func(
                 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules']['info']['submodules'],
                 [
                     'userinformation' => [
-                        'module' => Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class
+                        'module' => \Psychomieze\AdminpanelExtended\Modules\Info\UserInformation::class
                     ]
                 ]
             );
@@ -37,8 +37,12 @@ call_user_func(
             'module' => \Psychomieze\AdminpanelExtended\Modules\Rendering::class,
             'after' => ['debug'],
             'submodules' => [
+                'general' => [
+                    'module' => \Psychomieze\AdminpanelExtended\Modules\Rendering\General::class
+                ],
                 'fluid' => [
-                    'module' => \Psychomieze\AdminpanelExtended\Modules\Rendering\Fluid::class
+                    'module' => \Psychomieze\AdminpanelExtended\Modules\Rendering\Fluid::class,
+                    'after' => ['general']
                 ]
             ]
         ];

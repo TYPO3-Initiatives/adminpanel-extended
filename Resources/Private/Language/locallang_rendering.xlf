@@ -10,6 +10,9 @@
             <trans-unit id="submodule.fluid.label">
                 <source>Fluid</source>
             </trans-unit>
+            <trans-unit id="submodule.general.label">
+                <source>General</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
