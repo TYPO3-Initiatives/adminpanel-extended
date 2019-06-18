@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psychomieze\AdminpanelExtended\Modules\Rendering;
+namespace Psychomieze\AdminpanelExtended\Modules\Fluid;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
@@ -25,7 +25,7 @@ class General extends AbstractSubModule implements ContentProviderInterface, Dat
     public function getContent(ModuleData $data): string
     {
         $view = new StandaloneView();
-        $view->setTemplatePathAndFilename('EXT:adminpanel_extended/Resources/Private/Templates/Rendering/General.html');
+        $view->setTemplatePathAndFilename('EXT:adminpanel_extended/Resources/Private/Templates/Fluid/General.html');
 
         $view->assignMultiple($data->getArrayCopy());
 
@@ -52,7 +52,7 @@ class General extends AbstractSubModule implements ContentProviderInterface, Dat
      */
     public function getIdentifier(): string
     {
-        return 'psychomieze_rendering_general';
+        return 'psychomieze_fluid_general';
     }
 
     /**
@@ -63,7 +63,7 @@ class General extends AbstractSubModule implements ContentProviderInterface, Dat
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_rendering.xlf:submodule.general.label'
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.label'
         );
     }
 }

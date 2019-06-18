@@ -7,7 +7,7 @@ namespace Psychomieze\AdminpanelExtended\Modules;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ShortInfoProviderInterface;
 
-class Rendering extends AbstractModule implements ShortInfoProviderInterface
+class Fluid extends AbstractModule implements ShortInfoProviderInterface
 {
     /**
      * Identifier for this module,
@@ -17,7 +17,7 @@ class Rendering extends AbstractModule implements ShortInfoProviderInterface
      */
     public function getIdentifier(): string
     {
-        return 'psychomieze_rendering';
+        return 'psychomieze_fluid';
     }
 
     /**
@@ -28,7 +28,7 @@ class Rendering extends AbstractModule implements ShortInfoProviderInterface
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_rendering.xlf:module.rendering.label'
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:module.fluid.label'
         );
     }
 

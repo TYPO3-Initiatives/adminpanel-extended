@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Psychomieze\AdminpanelExtended\Modules\Rendering;
+namespace Psychomieze\AdminpanelExtended\Modules\Fluid;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
@@ -66,7 +66,7 @@ class Fluid extends AbstractSubModule implements ContentProviderInterface, DataP
      */
     public function getIdentifier(): string
     {
-        return 'psychomieze_rendering_fluid';
+        return 'psychomieze_fluid_fluid';
     }
 
     /**
@@ -77,7 +77,7 @@ class Fluid extends AbstractSubModule implements ContentProviderInterface, DataP
     public function getLabel(): string
     {
         return $this->getLanguageService()->sL(
-            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_rendering.xlf:submodule.fluid.label'
+            'LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.fluid.label'
         );
     }
 

@@ -4,8 +4,8 @@
           product-name="adminpanel-extended">
         <header/>
         <body>
-            <trans-unit id="module.rendering.label">
-                <source>Rendering</source>
+            <trans-unit id="module.fluid.label">
+                <source>Fluid</source>
             </trans-unit>
             <trans-unit id="submodule.fluid.label">
                 <source>Fluid</source>
