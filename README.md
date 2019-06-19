@@ -15,6 +15,8 @@ Currently in alpha phase!
 - Show available hooks for current request
 - Show available signals for current request
 - Show currently online users and info if someone is editing current page
+- Show fluid global namespaces 
+- Show fluid preprocessors 
 
 ### Development
 

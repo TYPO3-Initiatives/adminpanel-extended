@@ -55,6 +55,6 @@ class Fluid extends AbstractModule implements ShortInfoProviderInterface
      */
     public function getIconIdentifier(): string
     {
-        return 'actions-document';
+        return 'actions-document'; //only used as long as we don't have a better one.
     }
 }
