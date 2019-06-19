@@ -3,6 +3,13 @@ declare(strict_types=1);
 
 namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules;
 
+/*
+ * This file is part of the TYPO3 Adminpanel Initiative.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+
 use Prophecy\Argument;
 use Psychomieze\AdminpanelExtended\Modules\Fluid;
 use TYPO3\CMS\Adminpanel\Service\ConfigurationService;
@@ -12,6 +19,9 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class FluidTest extends UnitTestCase
 {
+    /**
+     * @var bool
+     */
     protected $resetSingletonInstances = true;
 
     /**
@@ -19,6 +29,9 @@ class FluidTest extends UnitTestCase
      */
     protected $subject;
 
+    /**
+     * @var \TYPO3\CMS\Core\Localization\LanguageService
+     */
     protected $languageService;
 
     protected function setUp(): void
