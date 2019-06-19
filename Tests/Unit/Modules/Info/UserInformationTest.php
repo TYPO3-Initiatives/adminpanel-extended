@@ -19,7 +19,6 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
-use TYPO3\CMS\Beuser\Domain\Repository\BackendUserSessionRepository;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Object\ObjectManager;
@@ -31,6 +30,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 class UserInformationTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
+
     /**
      * @var \Psychomieze\AdminpanelExtended\Modules\Info\UserInformation|\PHPUnit\Framework\MockObject\MockObject
      */
@@ -39,7 +40,6 @@ class UserInformationTest extends UnitTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->resetSingletonInstances = true;
 
         $this->subject = $this->createPartialMock(UserInformation::class, ['isPageLocked']);
     }
