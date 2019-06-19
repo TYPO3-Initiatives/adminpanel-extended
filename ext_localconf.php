@@ -39,10 +39,6 @@ call_user_func(
             'submodules' => [
                 'general' => [
                     'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\General::class
-                ],
-                'fluid' => [
-                    'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\Fluid::class,
-                    'after' => ['general']
                 ]
             ]
         ];

@@ -7,11 +7,26 @@
             <trans-unit id="module.fluid.label">
                 <source>Fluid</source>
             </trans-unit>
-            <trans-unit id="submodule.fluid.label">
-                <source>Fluid</source>
-            </trans-unit>
             <trans-unit id="submodule.general.label">
                 <source>General</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.namespaces">
+                <source>Global namespaces</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.shortname">
+                <source>Shortname</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.namespace">
+                <source>Namespace</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.preprocessors">
+                <source>Pre processors</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.processor">
+                <source>Processor</source>
+            </trans-unit>
+            <trans-unit id="submodule.general.priority">
+                <source>Priority</source>
             </trans-unit>
         </body>
     </file>
