@@ -1,0 +1,73 @@
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{fluidNamespaces}">
+    <h2 class="typo3-adminPanel-headline">
+        <f:translate
+            key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.namespaces"/>
+    </h2>
+
+    <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+        <thead>
+        <tr>
+            <th scope="col" class="typo3-adminPanel-table-cell-key">
+                <f:translate
+                    key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.shortname"/>
+            </th>
+            <th scope="col">
+                <f:translate
+                    key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.namespace"/>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <f:for each="{fluidNamespaces}" key="shortname" as="phpnamespaces">
+            <tr>
+                <th scope="row" class="typo3-adminPanel-table-cell-key">{shortname}</th>
+                <td>
+                    <table class="typo3-adminPanel-table">
+                        <tbody>
+                        <f:for each="{phpnamespaces}" key="priority" as="namespace">
+                            <tr>
+                                <th scope="row" class="typo3-adminPanel-table-cell-key">{priority}</th>
+                                <td>{namespace}</td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </f:for>
+        </tbody>
+    </table>
+</f:if>
+
+<f:if condition="{preProcessors}">
+    <h2 class="typo3-adminPanel-headline">
+        <f:translate
+            key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.preprocessors"/>
+    </h2>
+    <div class="typo3-adminPanel-table-overflow">
+        <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+            <thead>
+            <tr>
+                <th scope="col" class="typo3-adminPanel-table-cell-key">
+                    <f:translate
+                        key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.priority"/>
+                </th>
+                <th scope="col">
+                    <f:translate
+                        key="LLL:EXT:adminpanel_extended/Resources/Private/Language/locallang_fluid.xlf:submodule.general.processor"/>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{preProcessors}" key="priority" as="processor">
+                <tr>
+                    <th scope="row" class="typo3-adminPanel-table-cell-key">{priority}</th>
+                    <td>{processor}</td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </div>
+</f:if>
+</html>
