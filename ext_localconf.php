@@ -39,6 +39,10 @@ call_user_func(
             'submodules' => [
                 'general' => [
                     'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\General::class
+                ],
+                'templates' => [
+                    'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\Templates::class,
+                    'after' => ['general']
                 ]
             ]
         ];

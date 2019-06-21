@@ -28,6 +28,9 @@
             <trans-unit id="submodule.general.priority">
                 <source>Priority</source>
             </trans-unit>
+            <trans-unit id="submodule.templates.label">
+                <source>Templates</source>
+            </trans-unit>
         </body>
     </file>
 </xliff>
