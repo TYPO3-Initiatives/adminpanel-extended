@@ -8,17 +8,17 @@
                 <th scope="col">Controller</th>
                 <th scope="col">Action</th>
                 <th scope="col">Format</th>
-                <th scope="col">Render Times</th>
             </tr>
             </thead>
             <tbody>
-            <f:for each="{templates}" key="path" as="data">
+            <f:for each="{templates}" key="identifier" as="data">
                 <tr>
-                    <th scope="row" class="typo3-adminPanel-table-cell-key">{path}</th>
+                    <th scope="row" class="typo3-adminPanel-table-cell-key">
+                        <a href="#" data-typo3-role="template-link" data-typo3-ajax-url="{templateDataUri}&templateId={identifier}" data-typo3-template-id="{identifier}">{data.path}</a>
+                    </th>
                     <td>{data.controller}</td>
                     <td>{data.action}</td>
                     <td>{data.format}</td>
-                    <td>{data.renderCount}</td>
                 </tr>
             </f:for>
             </tbody>

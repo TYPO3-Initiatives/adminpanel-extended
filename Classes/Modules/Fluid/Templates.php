@@ -16,6 +16,8 @@ use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\ContentProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\ModuleApi\ResourceProviderInterface;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Log\LogRecord;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -23,7 +25,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 /**
  * Fluid templates submodule
  */
-class Templates extends AbstractSubModule implements ContentProviderInterface, DataProviderInterface
+class Templates extends AbstractSubModule implements ContentProviderInterface, DataProviderInterface, ResourceProviderInterface
 {
     /**
      * Identifier for this module,
@@ -63,6 +65,11 @@ class Templates extends AbstractSubModule implements ContentProviderInterface, D
 
         $view->setTemplatePathAndFilename('EXT:adminpanel_extended/Resources/Private/Templates/Fluid/Templates.html');
         $view->assignMultiple($data->getArrayCopy());
+        $url = GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+            'ajax_adminPanelExtended_templateData',
+            ['requestId' => $data['requestId']]
+        );
+        $view->assign('templateDataUri', $url);
 
         return $view->render();
     }
@@ -83,23 +90,61 @@ class Templates extends AbstractSubModule implements ContentProviderInterface, D
         );
 
         $templates = [];
+
         foreach ($templateRecords as $logRecord) {
-            $data = $logRecord->getData();
-            if (isset($templates[$logRecord->getMessage()])) {
-                $templates[$logRecord->getMessage()]['renderCount'] += 1;
-            } else {
-                $templates[$logRecord->getMessage()] = [
-                    'controller' => $data['controller'],
-                    'action' => $data['action'],
-                    'format' => $data['format'],
-                    'renderCount' => 1
-                ];
-            }
+            $templates[$logRecord->getMessage()] = $logRecord->getData();
         }
+
+        $templates = array_unique($templates, SORT_REGULAR);
 
         return new ModuleData([
             'templates' => $templates,
             'requestId' => $request->getAttribute('adminPanelRequestId')
         ]);
+    }
+
+    protected function isTemplateAlreadyRendered(array $templates, LogRecord $logRecord): bool
+    {
+        foreach ($templates as $template) {
+            if ($template['path'] === $logRecord->getData()['path']
+                && $template['controller'] === $logRecord->getData()['controller']
+                && $template['action'] === $logRecord->getData()['action']
+                && $template['format'] === $logRecord->getData()['format']
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns a string array with javascript files that will be rendered after the module
+     *
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.js'];
+     *
+     * @return array
+     */
+    public function getJavaScriptFiles(): array
+    {
+        return [
+            'EXT:adminpanel_extended/Resources/Public/JavaScript/Templates.js',
+            'EXT:adminpanel_extended/Resources/Public/JavaScript/vendor/prettify.js',
+        ];
+    }
+
+    /**
+     * Returns a string array with css files that will be rendered after the module
+     *
+     * Example: return ['EXT:adminpanel/Resources/Public/JavaScript/Modules/Edit.css'];
+     *
+     * @return array
+     */
+    public function getCssFiles(): array
+    {
+        return [
+            'EXT:adminpanel_extended/Resources/Public/Css/Templates.css',
+            'EXT:adminpanel_extended/Resources/Public/Css/vendor/desert.css'
+        ];
     }
 }

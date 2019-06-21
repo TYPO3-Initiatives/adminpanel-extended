@@ -14,4 +14,8 @@ return [
         'path' => '/adminpanelExtended/signals/data',
         'target' => \Psychomieze\AdminpanelExtended\Controller\SignalsAjaxController::class . '::getData'
     ],
+    'adminPanelExtended_templateData' => [
+        'path' => '/adminpanelExtended/templates/data',
+        'target' => \Psychomieze\AdminpanelExtended\Controller\TemplatesAjaxController::class . '::getData'
+    ],
 ];

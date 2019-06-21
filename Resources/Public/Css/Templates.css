@@ -1,0 +1,28 @@
+/*
+ * This file is part of the TYPO3 Adminpanel Initiative.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint {
+    background-color: #333;
+}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint *{
+    white-space: pre;
+}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L0,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L1,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L2,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L3,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L5,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L6,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L7,
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint li.L8 {
+    list-style-type: decimal;
+}
+#TSFE_ADMIN_PANEL_FORM.typo3-kidjls9dksoje.typo3-adminPanel pre.prettyprint ol.linenums {
+    padding-left: 40px;
+    margin-top: 0;
+    margin-bottom: 0;
+    color: #AEAEAE;
+}

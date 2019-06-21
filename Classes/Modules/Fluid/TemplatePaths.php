@@ -31,23 +31,23 @@ class TemplatePaths extends \TYPO3\CMS\Fluid\View\TemplatePaths
             $format
         );
 
-        $message = $templateName;
-
-
-        if (StringUtility::beginsWith($message, Environment::getExtensionsPath())) {
-            $message = str_replace(Environment::getExtensionsPath() . DIRECTORY_SEPARATOR, 'EXT:', $message);
-        } elseif (StringUtility::beginsWith($message, Environment::getFrameworkBasePath())) {
-            $message = str_replace(Environment::getFrameworkBasePath() . DIRECTORY_SEPARATOR, 'EXT:', $message);
+        if (StringUtility::beginsWith($templateName, Environment::getExtensionsPath())) {
+            $path = str_replace(Environment::getExtensionsPath() . DIRECTORY_SEPARATOR, 'EXT:', $templateName);
+        } elseif (StringUtility::beginsWith($templateName, Environment::getFrameworkBasePath())) {
+            $path = str_replace(Environment::getFrameworkBasePath() . DIRECTORY_SEPARATOR, 'EXT:', $templateName);
         }
 
+        $format = $format ?? $this->getFormat();
+        $identifier = uniqid("template-{$controller}-{$action}-{$format}-", false);
 
         $this->logger->log(
             LogLevel::DEBUG,
-            $message,
+            $identifier,
             [
+                'path' => $path ?? $templateName,
                 'controller' => $controller,
                 'action' => $action,
-                'format' => $format ?? $this->getFormat()
+                'format' => $format
             ]
         );
 
