@@ -46,5 +46,9 @@ call_user_func(
                 ]
             ]
         ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Fluid\View\TemplatePaths::class] = [
+            'className' => \Psychomieze\AdminpanelExtended\Modules\Fluid\TemplatePaths::class
+        ];
     }
 );
