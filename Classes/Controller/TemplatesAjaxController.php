@@ -10,7 +10,6 @@ namespace Psychomieze\AdminpanelExtended\Controller;
  * LICENSE file that was distributed with this source code.
  */
 
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -24,7 +23,7 @@ class TemplatesAjaxController implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public function getData(ServerRequestInterface $request): ResponseInterface
+    public function getData(ServerRequestInterface $request): JsonResponse
     {
         $queryParams = $request->getQueryParams();
         $templateId = (string)($queryParams['templateId'] ?? '');

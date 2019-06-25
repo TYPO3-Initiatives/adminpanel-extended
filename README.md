@@ -28,4 +28,5 @@ initiative, see <https://typo3.org/community/teams/typo3-development/initiatives
 Report issues and find the code at <https://github.com/TYPO3-Initiatives/adminpanel-extended>
 
 ## Misc
-This project is highly inspired by the symfony profiler: https://symfony.com/doc/current/profiler.html
+
+This project is highly inspired by the symfony profiler: <https://symfony.com/doc/current/profiler.html>
