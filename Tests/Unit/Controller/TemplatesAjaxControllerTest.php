@@ -14,7 +14,9 @@ use Prophecy\Argument;
 use Psychomieze\AdminpanelExtended\Controller\TemplatesAjaxController;
 use Psychomieze\AdminpanelExtended\Modules\Fluid\Templates;
 use Psychomieze\AdminpanelExtended\Service\ModuleDataService;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TemplatesAjaxControllerTest extends UnitTestCase
@@ -55,12 +57,15 @@ class TemplatesAjaxControllerTest extends UnitTestCase
 
     /**
      * @test
+     * @dataProvider moduleDataProvider
+     * @param $moduleData
      */
-    public function getDataReturnsEmptyJsonResponseIfModuleDataIsNotFound(): void
+    public function getDataReturnsEmptyJsonResponseIfModuleDataIsNotFoundOrTemplateRecordIsNotAnArray($moduleData): void
     {
         $moduleDataService = $this->prophesize(ModuleDataService::class);
         $moduleDataService->getModuleDataByRequestId(Templates::class, Argument::any())
-            ->willReturn(null);
+            ->willReturn($moduleData);
+        GeneralUtility::addInstance(ModuleDataService::class, $moduleDataService->reveal());
 
         $response = $this->subject->getData($this->request);
 
@@ -75,23 +80,31 @@ class TemplatesAjaxControllerTest extends UnitTestCase
     {
         return [
             'empty query params' => [
-                'queryParams' => []
+                'queryParams' => [],
             ],
             'only template id' => [
-                'queryParams' => ['templateId' => 'some id']
+                'queryParams' => ['templateId' => 'some id'],
             ],
             'only request id' => [
-                'queryParams' => ['requestId' => 'some id']
+                'queryParams' => ['requestId' => 'some id'],
             ],
             'empty template id' => [
-                'queryParams' => ['templateId' => '', 'requestId' => 'some id']
+                'queryParams' => ['templateId' => '', 'requestId' => 'some id'],
             ],
             'empty request id' => [
-                'queryParams' => ['templateId' => 'some id', 'requestId' => '']
+                'queryParams' => ['templateId' => 'some id', 'requestId' => ''],
             ],
             'empty request id and template id' => [
-                'queryParams' => ['templateId' => '', 'requestId' => '']
-            ]
+                'queryParams' => ['templateId' => '', 'requestId' => ''],
+            ],
+        ];
+    }
+
+    public function moduleDataProvider(): array
+    {
+        return [
+            ['moduleData' => null],
+            ['moudleData' => new ModuleData()],
         ];
     }
 }
