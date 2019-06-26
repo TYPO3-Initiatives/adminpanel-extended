@@ -103,21 +103,6 @@ class Templates extends AbstractSubModule implements ContentProviderInterface, D
         ]);
     }
 
-    protected function isTemplateAlreadyRendered(array $templates, LogRecord $logRecord): bool
-    {
-        foreach ($templates as $template) {
-            if ($template['path'] === $logRecord->getData()['path']
-                && $template['controller'] === $logRecord->getData()['controller']
-                && $template['action'] === $logRecord->getData()['action']
-                && $template['format'] === $logRecord->getData()['format']
-            ) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     /**
      * Returns a string array with javascript files that will be rendered after the module
      *

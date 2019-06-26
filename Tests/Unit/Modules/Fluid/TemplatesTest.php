@@ -11,11 +11,16 @@ namespace Psychomieze\AdminpanelExtended\Tests\Unit\Modules\Fluid;
  */
 
 use Psychomieze\AdminpanelExtended\Modules\Fluid\Templates;
+use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 class TemplatesTest extends UnitTestCase
 {
+    protected $resetSingletonInstances = true;
 
     /**
      * @var \Psychomieze\AdminpanelExtended\Modules\Fluid\Templates
@@ -58,7 +63,7 @@ class TemplatesTest extends UnitTestCase
         static::assertSame(
             [
                 'EXT:adminpanel_extended/Resources/Public/Css/Templates.css',
-                'EXT:adminpanel_extended/Resources/Public/Css/vendor/desert.css'
+                'EXT:adminpanel_extended/Resources/Public/Css/vendor/desert.css',
             ],
             $this->subject->getCssFiles()
         );
@@ -69,7 +74,25 @@ class TemplatesTest extends UnitTestCase
      */
     public function getContent(): void
     {
-        $actual = $this->subject->getContent();
+        $moduleData = new ModuleData();
+        $moduleData['requestId'] = 'some request id';
+
+        $view = $this->prophesize(StandaloneView::class);
+        $view->setTemplatePathAndFilename('EXT:adminpanel_extended/Resources/Private/Templates/Fluid/Templates.html')->shouldBeCalled();
+        $view->assignMultiple($moduleData->getArrayCopy())->shouldBeCalled();
+        $view->assign('templateDataUri', 'some url')->shouldBeCalled();
+        $view->render()->willReturn('some html');
+        GeneralUtility::addInstance(StandaloneView::class, $view->reveal());
+
+        $uriBuilder = $this->prophesize(UriBuilder::class);
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilder->reveal());
+
+        $uriBuilder->buildUriFromRoute(
+            'ajax_adminPanelExtended_templateData',
+            ['requestId' => $moduleData['requestId']]
+        )->willReturn('some url');
+
+        $this->subject->getContent($moduleData);
     }
 
     /**
@@ -80,17 +103,9 @@ class TemplatesTest extends UnitTestCase
         static::assertSame(
             [
                 'EXT:adminpanel_extended/Resources/Public/JavaScript/Templates.js',
-                'EXT:adminpanel_extended/Resources/Public/JavaScript/vendor/prettify.js'
+                'EXT:adminpanel_extended/Resources/Public/JavaScript/vendor/prettify.js',
             ],
             $this->subject->getJavaScriptFiles()
         );
-    }
-
-    /**
-     * @test
-     */
-    public function getDataToStore(): void
-    {
-        $actual = $this->subject->getDataToStore();
     }
 }
