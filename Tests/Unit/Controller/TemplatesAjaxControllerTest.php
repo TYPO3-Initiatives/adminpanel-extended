@@ -33,6 +33,8 @@ class TemplatesAjaxControllerTest extends UnitTestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->subject = new TemplatesAjaxController();
         $this->request = new ServerRequest();
         $this->request = $this->request->withQueryParams(['templateId' => 'some id', 'requestId' => 'some id']);
@@ -62,15 +64,48 @@ class TemplatesAjaxControllerTest extends UnitTestCase
      */
     public function getDataReturnsEmptyJsonResponseIfModuleDataIsNotFoundOrTemplateRecordIsNotAnArray($moduleData): void
     {
-        $moduleDataService = $this->prophesize(ModuleDataService::class);
-        $moduleDataService->getModuleDataByRequestId(Templates::class, Argument::any())
-            ->willReturn($moduleData);
-        GeneralUtility::addInstance(ModuleDataService::class, $moduleDataService->reveal());
+        $this->mockModuleDataService($moduleData);
 
         $response = $this->subject->getData($this->request);
 
         static::assertSame(404, $response->getStatusCode());
         static::assertSame('', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidPathDataProvider
+     * @param string $path
+     */
+    public function getDataReturnsEmptyJsonResponseOnInvalidPath(string $path): void
+    {
+        $moduleData = new ModuleData();
+        $moduleData['templates']['some id'] = ['path' => $path];
+        $this->mockModuleDataService($moduleData);
+
+        $response = $this->subject->getData($this->request);
+
+        static::assertSame(404, $response->getStatusCode());
+        static::assertSame('', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function getDataReturnsJsonResponseWithHtmlContentAsTemplate(): void
+    {
+        $path = 'EXT:adminpanel_extended/Tests/Unit/Fixtures/DummyTemplate.html';
+        $moduleData = new ModuleData();
+        $moduleData['templates']['some id'] = ['path' => $path];
+        $this->mockModuleDataService($moduleData);
+
+        $response = $this->subject->getData($this->request);
+
+        static::assertSame(200, $response->getStatusCode());
+        $jsonDecodedContent = json_decode($response->getBody()->getContents(), true);
+        static::assertArrayHasKey('templateId', $jsonDecodedContent);
+        static::assertArrayHasKey('template', $jsonDecodedContent);
+        static::assertStringContainsString('<html>some html code</html>', $jsonDecodedContent['template']);
     }
 
     /**
@@ -105,6 +140,24 @@ class TemplatesAjaxControllerTest extends UnitTestCase
         return [
             ['moduleData' => null],
             ['moudleData' => new ModuleData()],
+        ];
+    }
+
+    /**
+     * @param $moduleData
+     */
+    protected function mockModuleDataService($moduleData): void
+    {
+        $moduleDataService = $this->prophesize(ModuleDataService::class);
+        $moduleDataService->getModuleDataByRequestId(Templates::class, Argument::any())->willReturn($moduleData);
+        GeneralUtility::addInstance(ModuleDataService::class, $moduleDataService->reveal());
+    }
+
+    public function invalidPathDataProvider(): array
+    {
+        return [
+            'non existing relative template path' => ['foo'],
+            'unallowed abs filename' => ['/baa'],
         ];
     }
 }

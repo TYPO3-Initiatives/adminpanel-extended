@@ -38,11 +38,12 @@ class TemplatesAjaxController implements LoggerAwareInterface
             $templateRecord = $moduleData['templates'][$templateId] ?? null;
             if (is_array($templateRecord)) {
                 $absTemplatePath = GeneralUtility::getFileAbsFileName($templateRecord['path']);
-
-                $content = file_get_contents($absTemplatePath);
-                $statusCode = 200;
-                $templateData['templateId'] = $templateId;
-                $templateData['template'] = $content;
+                if (GeneralUtility::isAllowedAbsPath($absTemplatePath) && file_exists($absTemplatePath)) {
+                    $content = file_get_contents($absTemplatePath);
+                    $statusCode = 200;
+                    $templateData['templateId'] = $templateId;
+                    $templateData['template'] = $content;
+                }
             }
         }
 
