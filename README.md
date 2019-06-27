@@ -16,6 +16,7 @@ Currently in alpha phase!
 - Show currently online users and info if someone is editing current page
 - Show fluid global namespaces
 - Show fluid preprocessors
+- Show fluid templates that have been rendered with code highlighting
 
 ### Development
 
@@ -25,3 +26,7 @@ initiative, see <https://typo3.org/community/teams/typo3-development/initiatives
 ## Issues / Repository
 
 Report issues and find the code at <https://github.com/TYPO3-Initiatives/adminpanel-extended>
+
+## Misc
+
+This project is highly inspired by the symfony profiler: <https://symfony.com/doc/current/profiler.html>

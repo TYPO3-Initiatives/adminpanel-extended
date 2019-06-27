@@ -1,0 +1,29 @@
+<html xmlns:f="https://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
+<f:if condition="{templates}">
+    <f:then>
+        <table class="typo3-adminPanel-table typo3-adminPanel-table-debug">
+            <thead>
+            <tr>
+                <th scope="col" class="typo3-adminPanel-table-cell-key">Path</th>
+                <th scope="col">Controller</th>
+                <th scope="col">Action</th>
+                <th scope="col">Format</th>
+            </tr>
+            </thead>
+            <tbody>
+            <f:for each="{templates}" key="identifier" as="data">
+                <tr>
+                    <th scope="row" class="typo3-adminPanel-table-cell-key">
+                        <a href="#" data-typo3-role="template-link" data-typo3-ajax-url="{templateDataUri}&templateId={identifier}" data-typo3-template-id="{identifier}">{data.path}</a>
+                    </th>
+                    <td>{data.controller}</td>
+                    <td>{data.action}</td>
+                    <td>{data.format}</td>
+                </tr>
+            </f:for>
+            </tbody>
+        </table>
+    </f:then>
+    <f:else>No templates</f:else>
+</f:if>
+</html>

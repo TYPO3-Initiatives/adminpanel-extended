@@ -39,8 +39,16 @@ call_user_func(
             'submodules' => [
                 'general' => [
                     'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\General::class
+                ],
+                'templates' => [
+                    'module' => \Psychomieze\AdminpanelExtended\Modules\Fluid\Templates::class,
+                    'after' => ['general']
                 ]
             ]
+        ];
+
+        $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects'][\TYPO3\CMS\Fluid\View\TemplatePaths::class] = [
+            'className' => \Psychomieze\AdminpanelExtended\Modules\Fluid\TemplatePaths::class
         ];
     }
 );
