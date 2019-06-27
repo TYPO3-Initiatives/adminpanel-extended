@@ -70,25 +70,27 @@ class TemplatePaths extends \TYPO3\CMS\Fluid\View\TemplatePaths
             $format
         );
 
-        if (StringUtility::beginsWith($templateName, Environment::getExtensionsPath())) {
-            $path = str_replace(Environment::getExtensionsPath() . DIRECTORY_SEPARATOR, 'EXT:', $templateName);
-        } elseif (StringUtility::beginsWith($templateName, Environment::getFrameworkBasePath())) {
-            $path = str_replace(Environment::getFrameworkBasePath() . DIRECTORY_SEPARATOR, 'EXT:', $templateName);
+        if (is_string($templateName)) {
+            if (StringUtility::beginsWith($templateName, Environment::getExtensionsPath())) {
+                $path = str_replace(Environment::getExtensionsPath().DIRECTORY_SEPARATOR, 'EXT:', $templateName);
+            } elseif (StringUtility::beginsWith($templateName, Environment::getFrameworkBasePath())) {
+                $path = str_replace(Environment::getFrameworkBasePath().DIRECTORY_SEPARATOR, 'EXT:', $templateName);
+            }
+
+            $format = $format ?? $this->getFormat();
+            $identifier = uniqid("template-{$controller}-{$action}-{$format}-", false);
+
+            $this->logger->log(
+                LogLevel::DEBUG,
+                $identifier,
+                [
+                    'path' => $path ?? $templateName,
+                    'controller' => $controller,
+                    'action' => $action,
+                    'format' => $format,
+                ]
+            );
         }
-
-        $format = $format ?? $this->getFormat();
-        $identifier = uniqid("template-{$controller}-{$action}-{$format}-", false);
-
-        $this->logger->log(
-            LogLevel::DEBUG,
-            $identifier,
-            [
-                'path' => $path ?? $templateName,
-                'controller' => $controller,
-                'action' => $action,
-                'format' => $format
-            ]
-        );
 
         return $templateName;
     }
